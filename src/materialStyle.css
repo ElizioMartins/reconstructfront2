@@ -1,0 +1,17 @@
+.MuiTypography-subtitle2 {
+  font-size: 14px;
+}
+.MuiButtonBase-root.MuiButton-root.MuiButton-text.array-item-add.MuiButton-textSecondary,
+.MuiTypography-root.makeStyles-root-3.MuiTypography-subtitle2 {
+  font-size: 14px;
+}
+.MuiFormControl-root button:focus {
+  background-color: inherit;
+}
+.MuiFormControl-root [type='checkbox']:checked + span:not(.lever):before {
+  border-right: 2px solid #f50057;
+  border-bottom: 2px solid #f50057;
+}
+.MuiButtonBase-root.MuiButton-root.MuiButton-text.MuiButton-textSizeSmall.MuiButton-sizeSmall {
+  display: block;
+}
