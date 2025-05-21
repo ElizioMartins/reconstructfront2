@@ -6,6 +6,8 @@ import logoOperacional from '../../assets/logo/logo-operacional.svg';
 import logoTi from '../../assets/logo/logo-ti.svg';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
+import { login} from '../../services/auth';
+
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -14,7 +16,15 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    navigate('/dashboard');
+   login(username, password)
+    .then((data) => {
+      console.log(data); 
+      localStorage.setItem('token', data.access_token);
+      navigate('/dashboard');
+    })
+    .catch((error) => {
+      console.error('Erro de login:', error);
+    });
   };
 
   const togglePasswordVisibility = () => {
