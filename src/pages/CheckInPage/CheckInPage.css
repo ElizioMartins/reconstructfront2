@@ -1,0 +1,416 @@
+.checkin-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+.checkin-background {
+  flex: 1;
+  background-color: #000000;
+  background-image: url('../../assets/banner/Rectangle.png');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.photo-credit {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  color: white;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.checkin-form-container {
+  width: 550px;
+  min-width: 550px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 50px;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  justify-content: center;
+}
+
+.checkin-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.logo-title-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  align-self: center;
+}
+
+.logo {
+  width: 18%;
+  height: auto;
+  margin-right: 5%;
+  min-width: 80px;
+  max-width: 120px;
+}
+
+.staff-text {
+  font-size: 26px;
+  margin: 0;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 15px;
+  margin-top: 5px;
+  align-self: center;
+}
+
+.title-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.title-container h1 {
+  font-size: 22px;
+  margin: 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.title-container h2 {
+  font-size: 22px;
+  margin: 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.checkin-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Layout para desktop (grade) */
+.posts-status-container {
+  width: 100%;
+  margin-bottom: 35px;
+  padding-bottom: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 18px;
+  padding: 5px 0;
+}
+
+/* Layout para mobile (rolagem horizontal) */
+@media (max-width: 768px) {
+  .posts-status-container {
+    display: flex;
+    overflow-x: auto;
+    grid-template-columns: none;
+    padding-bottom: 15px;
+    /* Esconde a barra de rolagem no Chrome, Safari e Opera */
+    -ms-overflow-style: none;  /* IE e Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .posts-status-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .post-status-card {
+    flex: 0 0 auto;
+    min-width: 130px;
+  }
+}
+
+.post-status-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  height: 80px;
+  padding: 10px 15px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-bottom: 3px solid transparent;
+}
+
+.post-status-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.post-status-card.selected {
+  border-bottom: 3px solid #673ab7;
+  background-color: #f0f0f0;
+}
+
+.post-status-count {
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 5px;
+  color: #673ab7;
+}
+
+.post-status-name {
+  color: #333;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.selected-post-info {
+  margin-top: 0;
+  margin-bottom: 25px;
+  padding: 15px;
+  border-radius: 6px;
+  background-color: #f8f8f8;
+}
+
+.selected-post-info h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.selected-post-info p {
+  margin: 8px 0;
+  color: #666;
+  font-size: 16px;
+}
+
+.action-buttons-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 25px;
+  gap: 20px;
+  width: 100%;
+}
+
+.back-button {
+  background-color: #757575;
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.back-button:hover {
+  background-color: #616161;
+}
+
+.action-button {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.action-button:hover {
+  background-color: #1976d2;
+}
+
+.action-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.support-contact {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.support-button {
+  width: 100%;
+  padding: 14px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+  .checkin-form-container {
+    width: 450px;
+    min-width: 450px;
+    padding: 25px 35px;
+  }
+  
+  .logo {
+    max-width: 100px;
+  }
+}
+
+@media (max-width: 992px) {
+  .checkin-form-container {
+    width: 400px;
+    min-width: 400px;
+    padding: 20px 30px;
+  }
+
+  .logo {
+    max-width: 90px;
+  }
+
+  .title-container h1,
+  .title-container h2 {
+    font-size: 16px;
+  }
+
+  .staff-text {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .checkin-container {
+    flex-direction: row; 
+  }
+  
+  .checkin-form-container {
+    width: 350px;
+    min-width: 350px;
+    padding: 20px;
+  }
+  
+  .logo {
+    max-width: 80px;
+  }
+}
+
+@media (max-width: 576px) {
+  .checkin-background {
+    flex: 0.5;
+  }
+  
+  .checkin-form-container {
+    width: 300px;
+    min-width: 300px;
+    padding: 15px;
+  }
+  
+  .logo {
+    max-width: 70px;
+    min-width: 60px;
+  }
+  
+  .title-container h1,
+  .title-container h2 {
+    font-size: 14px;
+  }
+  
+  .staff-text {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .checkin-container {
+    flex-direction: column;
+    background-color: #ffffff;
+  }
+  
+  .checkin-background {
+    display: none; 
+  }
+  
+  .checkin-form-container {
+    width: 100%;
+    min-width: unset;
+    height: 100vh;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
+  }
+  
+  .checkin-header {
+    margin-top: 0;
+    margin-bottom: 40px;
+  }
+  
+  .logo-title-container {
+    margin-bottom: 15px;
+  }
+  
+  .logo {
+    width: 65px;
+    height: 65px;
+    min-width: 65px;
+    margin-right: 20px;
+  }
+  
+  .title-container h1,
+  .title-container h2 {
+    font-size: 18px;
+  }
+  
+  .staff-text {
+    font-size: 22px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .checkin-content {
+    margin-bottom: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .action-buttons-container {
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .action-button {
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 6px;
+  }
+  
+  .back-button {
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 6px;
+  }
+  
+  .support-button {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 6px;
+  }
+}
