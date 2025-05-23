@@ -2,11 +2,13 @@ import React from 'react';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Home from './components/Home';
-import FormPage from './pages/FormPage';
-import TestPage from './pages/TestPage';
 import Login from './pages/Login';
 import PostSelectionPage from './pages/PostSelectionPage';
 import CheckInPage from './pages/CheckInPage';
+import JobCreatePage from './pages/JobCreatePage/JobCreatePage';
+import JobSearchPage from './pages/JobSearchPage/JobSearchPage';
+import EventSearchPage from './pages/EventSearchPage/EventSearchPage';
+import EventCreatePage from './pages/EventCreatePage/EventCreatePage';
 import './styles/App.css';
 
 const App = () => {
@@ -24,23 +26,27 @@ const App = () => {
               <Home />
             </main>
           </div>
-        } />  
-        <Route path="/dynamic_form/:templateId/:formId/:type" element={
+        } />
+        <Route path="/job-create" element={
           <div className="home-container">
-            <Sidebar />
-            <main className="main-content">
-              <FormPage />
-            </main>
+            <JobCreatePage />
           </div>
-        } />        
-        <Route path="/test-page" element={
+        } />
+        <Route path="/job-search" element={
           <div className="home-container">
-            <Sidebar />
-            <main className="main-content">
-              <TestPage />
-            </main>
+            <JobSearchPage />
           </div>
-        } />        
+        } />
+        <Route path="/event-search" element={
+          <div className="home-container">
+            <EventSearchPage />
+          </div>
+        } />
+        <Route path="/event-create" element={
+          <div className="home-container">
+            <EventCreatePage />
+          </div>
+        } />       
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
