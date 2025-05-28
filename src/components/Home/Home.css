@@ -1,0 +1,12 @@
+
+.main-content {
+  flex: 1;
+  padding: 40px 24px;
+  background: #000000;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 20px 10px;
+  }
+}

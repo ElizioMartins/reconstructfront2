@@ -1,0 +1,18 @@
+[[redirects]]
+  from = "/*"
+  to="index.html"
+  status=200
+[build.environment]
+  NODE_OPTIONS = "--openssl-legacy-provider"
+[[headers]]
+  for = "/*"
+  [headers.values]
+  cache-control = "no-cache max-age=0 no-store must-revalidate"
+  Content-Security-Policy = "frame-ancestors *.netlify.com *.netlify.app *.cloudflare.com https://sessions.bugsnag.com; script-src *.netlify.app *.netlify.com https://sessions.bugsnag.com 'unsafe-eval'; style-src *.netlify.app *.netlify.com https://fonts.googleapis.com 'unsafe-inline' https://sessions.bugsnag.com *.cloudflare.com;"
+  X-Content-Type-Options = "nosniff"
+  X-Frame-Options = "DENY"
+  X-XSS-Protection = "1; mode=block"
+  Strict-Transport-Security = "max-age=0; includeSubDomains; preload"
+  Referrer-Policy = "same-origin"
+  Feature-Policy = "accelerometer 'none'; camera 'none'; geolocation 'none'; gyroscope 'none'; magnetometer 'none'; microphone 'none'; payment 'none'; usb 'none'"
+  Permissions-Policy = "midi=(), encrypted-media=(), interest-cohort=()"
