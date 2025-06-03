@@ -9,6 +9,7 @@ import JobCreatePage from './pages/JobCreatePage/JobCreatePage';
 import JobSearchPage from './pages/JobSearchPage/JobSearchPage';
 import EventSearchPage from './pages/EventSearchPage/EventSearchPage';
 import EventCreatePage from './pages/EventCreatePage/EventCreatePage';
+import VolunteerPage from './pages/VolunteerPage/VolunteerPage';
 import './styles/App.css';
 
 const App = () => {
@@ -45,6 +46,11 @@ const App = () => {
         <Route path="/event-create" element={
           <div className="home-container">
             <EventCreatePage />
+          </div>
+        } />       
+        <Route path="/volunteer" element={
+          <div className="home-container">
+            <VolunteerPage />
           </div>
         } />       
         <Route path="*" element={<Navigate to="/login" replace />} />

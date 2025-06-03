@@ -142,7 +142,6 @@
   background-color: #1976d2;
 }
 
-/* Responsividade */
 @media (max-width: 992px) {
   .event-content {
     margin-left: 200px;

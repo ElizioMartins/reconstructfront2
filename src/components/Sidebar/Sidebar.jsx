@@ -37,6 +37,7 @@ const Sidebar = () => {
           <li><Link to="/dashboard" onClick={() => isMobile && setIsOpen(false)}>Dashboard</Link></li>
           <li><Link to="/job-search" onClick={() => isMobile && setIsOpen(false)}>Trabalhos</Link></li>
           <li><Link to="/event-search" onClick={() => isMobile && setIsOpen(false)}>Eventos</Link></li>
+          <li><Link to="/volunteer" onClick={() => isMobile && setIsOpen(false)}>Voluntariado</Link></li>
           <li><Link to="/post-selection" onClick={() => isMobile && setIsOpen(false)}>Seleção de Postos</Link></li>
         </ul>
       </nav>
