@@ -8,7 +8,7 @@
   for = "/*"
   [headers.values]
   cache-control = "no-cache max-age=0 no-store must-revalidate"
-  Content-Security-Policy = "frame-ancestors *.netlify.com *.netlify.app *.cloudflare.com https://sessions.bugsnag.com; script-src *.netlify.app *.netlify.com https://sessions.bugsnag.com 'unsafe-eval'; style-src *.netlify.app *.netlify.com https://fonts.googleapis.com 'unsafe-inline' https://sessions.bugsnag.com *.cloudflare.com;"
+  Content-Security-Policy = "frame-ancestors *.18mc.com.br *.netlify.com *.netlify.app *.cloudflare.com https://sessions.bugsnag.com; script-src *.netlify.app *.18mc.com.br *.netlify.com https://sessions.bugsnag.com 'unsafe-eval'; style-src *.netlify.app *.18mc.com.br *.netlify.com https://fonts.googleapis.com 'unsafe-inline' https://sessions.bugsnag.com *.cloudflare.com;"
   X-Content-Type-Options = "nosniff"
   X-Frame-Options = "DENY"
   X-XSS-Protection = "1; mode=block"
