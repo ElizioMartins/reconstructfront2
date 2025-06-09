@@ -1,3 +1,7 @@
+:root {
+  --sidevar-top-bottom-padding: 24px;
+}
+
 .app-container {
   display: flex;
   min-height: 100vh;
@@ -30,7 +34,7 @@
   background: #383838;
   color: #fff;
   min-width: 220px;
-  padding: 24px 16px;
+  padding: var(--sidevar-top-bottom-padding) 16px;
   display: flex;
   flex-direction: column;
   gap: 24px;

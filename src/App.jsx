@@ -10,49 +10,94 @@ import JobSearchPage from './pages/JobSearchPage/JobSearchPage';
 import EventSearchPage from './pages/EventSearchPage/EventSearchPage';
 import EventCreatePage from './pages/EventCreatePage/EventCreatePage';
 import VolunteerPage from './pages/VolunteerPage/VolunteerPage';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import './styles/App.css';
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Routes>     
-        <Route path="/" element={<Navigate to="/login" replace />} />       
-        <Route path="/login" element={<Login />} />        
-        <Route path="/post-selection" element={<PostSelectionPage />} />
-        <Route path="/check-in" element={<CheckInPage />} />
-        <Route path="/dashboard" element={
-          <div className="home-container">
-            <Sidebar />
-            <main className="main-content">
-              <Home />
-            </main>
-          </div>
-        } />
-        <Route path="/job-create" element={
-          <div className="home-container">
-            <JobCreatePage />
-          </div>
-        } />
-        <Route path="/job-search" element={
-          <div className="home-container">
-            <JobSearchPage />
-          </div>
-        } />
-        <Route path="/event-search" element={
-          <div className="home-container">
-            <EventSearchPage />
-          </div>
-        } />
-        <Route path="/event-create" element={
-          <div className="home-container">
-            <EventCreatePage />
-          </div>
-        } />       
-        <Route path="/volunteer" element={
-          <div className="home-container">
-            <VolunteerPage />
-          </div>
-        } />       
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/post-selection"
+          element={
+            <PrivateRoute>
+              <PostSelectionPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/check-in"
+          element={
+            <PrivateRoute>
+              <CheckInPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <div className="home-container">
+                <Sidebar />
+                <main className="main-content">
+                  <Home />
+                </main>
+              </div>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/job-create"
+          element={
+            <PrivateRoute>
+              <div className="home-container">
+                <JobCreatePage />
+              </div>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/job-search"
+          element={
+            <PrivateRoute>
+              <div className="home-container">
+                <JobSearchPage />
+              </div>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/event-search"
+          element={
+            <PrivateRoute>
+              <div className="home-container">
+                <EventSearchPage />
+              </div>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/event-create"
+          element={
+            <PrivateRoute>
+              <div className="home-container">
+                <EventCreatePage />
+              </div>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/volunteer"
+          element={
+            <PrivateRoute>
+              <div className="home-container">
+                <VolunteerPage />
+              </div>
+            </PrivateRoute>
+          }
+        />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
