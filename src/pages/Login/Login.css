@@ -42,7 +42,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 30px;
   width: 100%;
 }
 
@@ -95,7 +94,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 30px;
 }
 
 .form-group {
@@ -181,7 +179,6 @@
   cursor: pointer;
   transition: background-color 0.3s;
   width: 100%;
-  margin-bottom: 15px;
 }
 
 .login-button:hover {
@@ -206,9 +203,7 @@
 }
 
 .login-footer {
-  margin-top: 20px;
   text-align: center;
-  margin-top: 20px;
 }
 
 .footer-logos {
@@ -240,11 +235,11 @@
     min-width: 450px;
     padding: 25px 35px;
   }
-  
+
   .logo {
     max-width: 100px;
   }
-  
+
   .footer-logos img {
     max-width: 75px;
   }
@@ -269,7 +264,7 @@
   .welcome-text {
     font-size: 20px;
   }
-  
+
   .footer-logos img {
     max-width: 65px;
   }
@@ -277,15 +272,15 @@
 
 @media (max-width: 768px) {
   .login-container {
-    flex-direction: row; 
+    flex-direction: row;
   }
-  
+
   .login-form-container {
     width: 350px;
     min-width: 350px;
     padding: 20px;
   }
-  
+
   .logo {
     max-width: 80px;
   }
@@ -299,32 +294,31 @@
   }
 }
 
-
 @media (max-width: 576px) {
   .login-background {
     flex: 0.5;
   }
-  
+
   .login-form-container {
     width: 300px;
     min-width: 300px;
     padding: 15px;
   }
-  
+
   .logo {
     max-width: 70px;
     min-width: 60px;
   }
-  
+
   .title-container h1,
   .title-container h2 {
     font-size: 14px;
   }
-  
+
   .welcome-text {
     font-size: 18px;
   }
-  
+
   .footer-logos img {
     max-width: 50px;
     min-width: 40px;
@@ -336,11 +330,11 @@
     flex-direction: column;
     background-color: #ffffff;
   }
-  
+
   .login-background {
-    display: none; 
+    display: none;
   }
-  
+
   .login-form-container {
     width: 100%;
     min-width: unset;
@@ -351,54 +345,54 @@
     justify-content: flex-start;
     box-sizing: border-box;
   }
-  
+
   .login-header {
     margin-top: 0;
     margin-bottom: 40px;
   }
-  
+
   .logo-title-container {
     margin-bottom: 15px;
   }
-  
+
   .logo {
     width: 65px;
     height: 65px;
     min-width: 65px;
     margin-right: 20px;
   }
-  
+
   .title-container h1,
   .title-container h2 {
     font-size: 18px;
   }
-  
+
   .welcome-text {
     font-size: 22px;
     margin-top: 10px;
     margin-bottom: 20px;
   }
-  
+
   .login-form {
     margin-bottom: 0;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
   }
-  
+
   .login-form form {
     flex-grow: 0;
   }
-  
+
   .form-group {
     margin-bottom: 25px;
   }
-  
+
   .form-group label {
     margin-bottom: 10px;
     font-size: 16px;
   }
-  
+
   .form-group input {
     padding: 12px 15px;
     font-size: 16px;
@@ -406,7 +400,7 @@
     width: 100%;
     box-sizing: border-box;
   }
-  
+
   .form-options {
     margin-bottom: 25px;
     display: flex;
@@ -414,15 +408,15 @@
     justify-content: space-between;
     width: 100%;
   }
-  
+
   .remember-me label {
     font-size: 16px;
   }
-  
+
   .forgot-password {
     font-size: 16px;
   }
-  
+
   .login-button {
     padding: 12px;
     font-size: 18px;
@@ -431,7 +425,7 @@
     width: 100%;
     box-sizing: border-box;
   }
-  
+
   .support-button {
     padding: 12px;
     font-size: 16px;
@@ -439,20 +433,20 @@
     width: 100%;
     box-sizing: border-box;
   }
-  
+
   .login-footer {
     margin-top: auto;
     padding-top: 30px;
     padding-bottom: 20px;
   }
-  
+
   .footer-logos {
     display: flex;
     justify-content: center;
     gap: 30px;
     margin-bottom: 15px;
   }
-  
+
   .footer-logos img {
     height: 50px;
     min-height: 50px;
