@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './EventSearchPage.css';
 import Sidebar from '../../components/Sidebar';
+import { createEvent } from '../../services/event';
 
 const EventSearchPage = () => {
   const navigate = useNavigate();
@@ -76,16 +77,25 @@ const EventSearchPage = () => {
     }));
   };
   
-  const handleCreateSubmit = (e) => {
-    e.preventDefault();
-    
-    const newEvent = {
-      uuid: crypto.randomUUID(),
-      ...newEventData
-    };
-    
-    console.log('Novo evento criado:', newEvent);
-    
+ const handleCreateSubmit = async (e) => {
+  e.preventDefault();
+
+  const newEvent = {
+    uuid: crypto.randomUUID(),
+    name: newEventData.name,
+    observation: newEventData.observation,
+    shortKey: newEventData.shortKey,
+    startAt: new Date(newEventData.startAt).toISOString(),
+    endAt: new Date(newEventData.endAt).toISOString(),
+    printTicketCelebration: newEventData.printTicketCelebration,
+  };
+
+  try {
+    console.log('Novo evento:', newEvent);
+    const created = await createEvent(newEvent);
+    console.log('Evento criado com sucesso:', created);
+
+    alert('Evento criado com sucesso!');
     setNewEventData({
       name: '',
       observation: '',
@@ -94,10 +104,13 @@ const EventSearchPage = () => {
       endAt: '',
       printTicketCelebration: ''
     });
-    
     setShowCreateForm(false);
-    alert('Evento criado com sucesso!');
-  };
+    navigate('/eventos');
+  } catch (error) {
+    console.error('Erro ao criar evento:', error);
+    alert(`Erro ao criar evento: ${error.message}`);
+  }
+};
 
   const formatDate = (isoDate) => {
     const date = new Date(isoDate);

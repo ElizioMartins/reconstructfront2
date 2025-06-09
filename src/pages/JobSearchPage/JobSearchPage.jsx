@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './JobSearchPage.css';
 import Sidebar from '../../components/Sidebar';
+import { searchJobById } from '../../services/auth'; 
+import { createJob } from '../../services/event';
 
 const JobSearchPage = () => {
   const navigate = useNavigate();
@@ -19,7 +21,7 @@ const JobSearchPage = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    
+    console.log('Buscando ID:', searchId);
     if (!searchId.trim()) {
       setError('Por favor, insira um ID válido');
       return;
@@ -29,17 +31,14 @@ const JobSearchPage = () => {
     setError('');
     setShowCreateForm(false);
     
-    setTimeout(() => {
-      if (searchId === '3fa85f64-5717-4562-b3fc-2c963f66afa6' || searchId === '123') {
-        setJobData({
-          uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-          name: 'Manutenção de Equipamentos',
-          description: 'Realizar manutenção preventiva nos equipamentos do posto',
-          shortKey: 'MAN-001',
-          printTicketJob: 'TICKET-2025-001'
-        });
-      } else {
-        setError('Trabalho não encontrado');
+    setTimeout(async () => {
+      try {
+        const response = await searchJobById(searchId);
+        console.log('Trabalho encontrado:', response);
+        setJobData(response);
+      } catch (error) {
+        console.log('Erro ao buscar o trabalho:', error);
+        setError('Trabalho nao encontrado');
         setJobData(null);
       }
       setIsLoading(false);
@@ -70,26 +69,27 @@ const JobSearchPage = () => {
     }));
   };
   
-  const handleCreateSubmit = (e) => {
-    e.preventDefault();
-    
-    const newJob = {
-      uuid: crypto.randomUUID(),
-      ...newJobData
-    };
-    
-    console.log('Novo trabalho criado:', newJob);
-    
+  const handleCreateSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const createdJob = await createJob(newJobData);
+    console.log('Novo trabalho criado:', createdJob);
     setNewJobData({
       name: '',
       description: '',
       shortKey: '',
       printTicketJob: ''
     });
-    
     setShowCreateForm(false);
     alert('Trabalho criado com sucesso!');
-  };
+    setJobData(createdJob); // para mostrar detalhes, se quiser
+  } catch (error) {
+    console.error(error);
+    alert('Erro ao criar trabalho: ' + error.message);
+  }
+};
+
 
   return (
     <div className="job-page-container">

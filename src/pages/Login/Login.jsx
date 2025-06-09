@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import logoIssi from '../../assets/logo/logo-issi.svg';
@@ -14,18 +14,18 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-   login(username, password)
-    .then((data) => {
-      console.log(data); 
-      localStorage.setItem('token', data.access_token);
-      navigate('/dashboard');
-    })
-    .catch((error) => {
-      console.error('Erro de login:', error);
-    });
-  };
+ const handleLogin =  async (e) => {
+   e.preventDefault();
+
+   try {
+     const data = await login(username, password)
+     console.log(data);
+
+     navigate('/dashboard');
+   } catch (error) {
+     console.error('Erro de login:', error.message);
+   }
+ };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
