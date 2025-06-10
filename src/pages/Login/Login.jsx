@@ -5,27 +5,48 @@ import logoIssi from '../../assets/logo/logo-issi.svg';
 import logoOperacional from '../../assets/logo/logo-operacional.svg';
 import logoTi from '../../assets/logo/logo-ti.svg';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-
-import { login} from '../../services/auth';
+import { login } from '../../services/auth';
+import { useUser } from '../../context/userContext';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
 
- const handleLogin =  async (e) => {
-   e.preventDefault();
+  if (useUser().isLoggedIn()) {
+    navigate('/dashboard');
+  }
 
-   try {
-     const data = await login(username, password)
-     console.log(data);
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+    setShowPassword(false);
 
-     navigate('/dashboard');
-   } catch (error) {
-     console.error('Erro de login:', error.message);
-   }
- };
+    if (!username) {
+      setError({ userName: 'Usuário é obrigatório' });
+      return;
+    }
+
+    if (!password) {
+      setError({ password: 'Senha é obrigatória' });
+      return;
+    }
+
+    try {
+      const data = await login(username.trim(), password);
+      console.log(data);
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Erro de login:', error.message);
+      setError({ userName: 'Usuário ou senha inválidos' });
+      setIsLoading(false);
+    }
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -59,44 +80,55 @@ const Login = () => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
+              {error?.userName && (
+                <div className="error-message">{error.userName}</div>
+              )}
             </div>
-            
+
             <div className="form-group">
               <label htmlFor="password">Senha</label>
               <div className="password-input-container">
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   id="password"
                   placeholder="Digite a senha"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <span 
-                  className="password-toggle" 
+                <span
+                  className="password-toggle"
                   onClick={togglePasswordVisibility}
-                  title={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                  title={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
                 >
                   {showPassword ? <FaEye /> : <FaEyeSlash />}
                 </span>
               </div>
+              {error?.password && (
+                <div className="error-message">{error.password}</div>
+              )}
             </div>
-            
+
             <div className="form-options">
               <div className="remember-me">
                 <input type="checkbox" id="remember" />
                 <label htmlFor="remember">Lembrar-me</label>
               </div>
-              <a href="#" className="forgot-password">Esqueci a senha</a>
+              <a href="#" className="forgot-password">
+                Esqueci a senha
+              </a>
             </div>
-            
-            <button type="submit" className="login-button">Acessar</button>
+
+            <button type="submit" className="login-button" disabled={isLoading}>
+              Acessar
+              {isLoading && <span className="loading-spinner"></span>}
+            </button>
           </form>
-          
+
           <div className="support-contact">
             <button className="support-button">Contato com o suporte</button>
           </div>
         </div>
-        
+
         <div className="login-footer">
           <div className="footer-logos">
             <img src={logoOperacional} alt="Logo Operacional" />

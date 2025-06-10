@@ -8,14 +8,16 @@ export async function login(username, password) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password }),
-  }).then(async (response) => {
-    const data = await response.json();
-    localStorage.setItem('token', data.token);
-    return data.token;
-  }).catch((error) => {
-    console.log(error);
-    throw new Error('Login falhou');
-  });
+  })
+    .then(async (response) => {
+      const data = await response.json();
+      localStorage.setItem('token', data.token);
+      return data.token;
+    })
+    .catch((error) => {
+      console.log(error);
+      throw new Error('Login falhou');
+    });
 }
 
 export function getToken() {
@@ -26,9 +28,12 @@ export async function searchJobById(id) {
   const token = getToken();
   if (!token) throw new Error('Usuário não autenticado');
 
-  const response = await fetch(`${import.meta.env.REACT_APP_API_URL}/bpv/jobs/${id}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const response = await fetch(
+    `${import.meta.env.REACT_APP_API_URL}/bpv/jobs/${id}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    },
+  );
 
   if (!response.ok) {
     throw new Error('Trabalho não encontrado');
@@ -36,4 +41,3 @@ export async function searchJobById(id) {
 
   return response.json();
 }
-

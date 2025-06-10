@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Sidebar.css';
+import { useUser } from '../../context/userContext';
 
 const Sidebar = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [isOpen, setIsOpen] = useState(false);
+
+  const user = useUser();
 
   useEffect(() => {
     const handleResize = () => {
@@ -20,8 +23,7 @@ const Sidebar = () => {
   };
 
   const handleLoggout = () => {
-    localStorage.removeItem('token');
-    window.location.href = '/login'; // Redirect to login page
+    user.logout();
   };
 
   return (
