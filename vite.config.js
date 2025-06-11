@@ -14,7 +14,8 @@ export default ({ mode }) => {
           changeOrigin: true,
           secure: false,
           rewrite: path => path.replace(/^\/api/, ''),
-        },
+        }
+       
       },
     },
   });

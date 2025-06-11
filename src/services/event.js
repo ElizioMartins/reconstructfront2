@@ -23,7 +23,6 @@ export async function createJob(newJobData) {
 
 export async function createEvent(newEventData) {
   const token = getToken();
-  console.log(token);
   if (!token) throw new Error('Usuário não autenticado');
 
   const res = await fetch(`${import.meta.env.REACT_APP_API_URL}/api/bpv/celebrations`, {
@@ -38,42 +37,6 @@ export async function createEvent(newEventData) {
   if (!res.ok) {
     const errorText = await res.text();
     throw new Error(`Erro ao criar evento: ${res.status} ${errorText}`);
-  }
-  return await res.json();
-}
-
-
-
-export async function getOngoingCelebrations() {
-  const token = getToken();
-  if (!token) throw new Error('Usuário não autenticado');
-
-  const res = await fetch(`${import.meta.env.REACT_APP_API_URL}/volunteer`, {
-    headers: { 
-      'Authorization': `Bearer ${token}`
-    }
-  });
-
-  if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(`Erro ao buscar celebrações: ${res.status} ${errorText}`);
-  }
-  return res.json();
-}
-
-export async function getVolunteersByCpf(){
-  const taken = getToken();
-  if (!taken) throw new Error('Usuário não autenticado');
-
-  const res = await fetch(`${import.meta.env.REACT_APP_API_URL}/api/cpf`, {
-    method: 'GET',
-    headers: { 
-      'Authorization': `Bearer ${taken}`
-    }
-  });
-  if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(`Erro ao buscar voluntários: ${res.status} ${errorText}`);
   }
   return await res.json();
 }

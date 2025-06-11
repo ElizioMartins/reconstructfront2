@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './VolunteerPage.css';
 import Sidebar from '../../components/Sidebar';
-import { getOngoingCelebrations, getVolunteersByCpf } from '../../services/event';
+import { getOngoingCelebrations,  getVolunteersByCpf } from '../../services/celebration.js';
 
 const VolunteerPage = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -26,15 +26,16 @@ const VolunteerPage = () => {
     });
   };
 
-  // 🔽 Carregar eventos em andamento ao iniciar a tela
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         setIsLoading(true);
         const data = await getOngoingCelebrations();
-        setEvents(data);
+        setEvents(data || []);
       } catch (err) {
         setError('Erro ao carregar eventos.');
+        setEvents([]);
       } finally {
         setIsLoading(false);
       }
@@ -47,12 +48,35 @@ const VolunteerPage = () => {
     setSelectedEvent(event);
     setCurrentStep(2);
     setError('');
-    // Carregar funções (jobs) para o evento
     try {
       setIsLoading(true);
-      // Exemplo de requisição:
-      const res = await getOngoingCelebrations(event.uuid);
-      setJobs(res);
+      if (event.locationList && event.locationList.length > 0) {
+        const jobsFromLocations = event.locationList
+          .flatMap(location => location.celebrationJobLocationList || [])
+          .map(jobLocation => ({
+            uuid: jobLocation.uuid,
+            name: jobLocation.job?.name || 'Função sem nome',
+            description: jobLocation.job?.description || '',
+            location: location.name || '',
+            staffMin: jobLocation.staffMin,
+            staffMax: jobLocation.staffMax
+          }));
+        setJobs(jobsFromLocations);
+      } else if (event.celebrationJobLocationList && event.celebrationJobLocationList.length > 0) {
+        const jobsFromEvent = event.celebrationJobLocationList.map(jobLocation => ({
+          uuid: jobLocation.uuid,
+          name: jobLocation.job?.name || 'Função sem nome',
+          description: jobLocation.job?.description || '',
+          location: 'Geral',
+          staffMin: jobLocation.staffMin,
+          staffMax: jobLocation.staffMax
+        }));
+
+        setJobs(jobsFromEvent);
+      } else {
+
+        setJobs([]);
+      }
       setIsLoading(false);
     } catch (err) {
       setError('Erro ao carregar funções do evento.');
@@ -165,24 +189,40 @@ const VolunteerPage = () => {
         return (
           <div className="volunteer-events">
             <h2>Selecione um Evento</h2>
-            <div className="events-list">
-              {events.length === 0 && <p>Nenhum evento disponível.</p>}
-              {events.map((event) => (
-                <div 
-                  key={event.uuid} 
-                  className="event-card"
-                  onClick={() => handleSelectEvent(event)}
-                >
-                  <h3>{event.name}</h3>
-                  <div className="event-details">
-                    <p><strong>Observação:</strong> {event.observation}</p>
-                    <p><strong>Código:</strong> {event.shortKey}</p>
-                    <p><strong>Início:</strong> {formatDate(event.startAt)}</p>
-                    <p><strong>Término:</strong> {formatDate(event.endAt)}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            {isLoading ? (
+              <p>Carregando eventos...</p>
+            ) : (
+              <div className="events-list">
+                {events.length === 0 && !isLoading && <p>Nenhum evento disponível.</p>}
+                {events.map((event, index) => {
+                  const safeEvent = {
+                    uuid: event.uuid || `event-${index}`,
+                    name: event.name || 'Evento sem nome',
+                    observation: event.observation || 'Sem observação',
+                    shortKey: event.shortKey || 'N/A',
+                    startAt: event.startAt || null,
+                    endAt: event.endAt || null,
+                  };
+                  
+                  return (
+                    <div 
+                      key={safeEvent.uuid} 
+                      className="event-card"
+                      onClick={() => handleSelectEvent(event)}
+                    >
+                      <h3>{safeEvent.name}</h3>
+                      <div className="event-details">
+                        <p><strong>Observação:</strong> {safeEvent.observation}</p>
+                        <p><strong>Código:</strong> {safeEvent.shortKey}</p>
+                        <p><strong>Início:</strong> {safeEvent.startAt ? formatDate(safeEvent.startAt) : 'Data não definida'}</p>
+                        <p><strong>Término:</strong> {safeEvent.endAt ? formatDate(safeEvent.endAt) : 'Data não definida'}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            {error && <p className="error-message">{error}</p>}
           </div>
         );
       
