@@ -1,0 +1,16 @@
+.navbar {
+  background-color: #000000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .navbar-brand {
+    color: white;
+    font-size: x-large; // equivalente ao font-size: X-Large;
+    font-weight: bold;
+    vertical-align: top;
+
+  }
+}
+
+.me-4 {
+  margin-left: 0.5rem;
+}
