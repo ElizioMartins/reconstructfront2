@@ -12,6 +12,9 @@ import { VolunteerService } from '../../core/services/volunteer.service';
 import { EventService } from '../../core/services/event.service';
 import { JobService } from '../../core/services/job.service';
 import { ShiftService } from '../../core/services/shift.service';
+import { Event } from '../../core/models/event.model';
+import { Job } from '../../core/models/job.model';
+import { Shift } from '../../core/models/shift.model';
 
 @Component({
   selector: 'app-volunteer-wizard',
@@ -58,9 +61,9 @@ import { ShiftService } from '../../core/services/shift.service';
                 <div class="step-content">
                   <div class="event-details">
                     <strong>Evento Selecionado</strong><br>
-                    <span><b>Nome:</b> {{eventForm.value.event || '---'}}</span><br>
-                    <span><b>Código:</b> bpv5e</span><br>
-                    <span><b>Período:</b> 03/06/2025, 00:00 até 06/07/2025, 00:00</span>
+                    <span><b>Nome:</b> {{selectedEvent?.name || '---'}}</span><br>
+                    <span><b>Código:</b> {{selectedEvent?.code || '---'}}</span><br>
+                    <span><b>Período:</b> {{selectedEvent?.startDate | date:'dd/MM/yyyy, HH:mm'}} até {{selectedEvent?.endDate | date:'dd/MM/yyyy, HH:mm'}}</span>
                   </div>
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Digite o CPF do voluntário</mat-label>
@@ -177,14 +180,14 @@ export class VolunteerWizardComponent {
   volunteerData: any = null;
   volunteerError: string | null = null;
   isLoadingVolunteer = false;
-  events: any[] = [];
-  jobs: any[] = [];
-  selectedEvent: any = null;
-  selectedJob: any = null;
+  events: Event[] = [];
+  jobs: Job[] = [];
+  selectedEvent: Event | null = null;
+  selectedJob: Job | null = null;
   isLoadingEvents = false;
   isLoadingJobs = false;
-  shifts: any[] = [];
-  selectedShift: any = null;
+  shifts: Shift[] = [];
+  selectedShift: Shift | null = null;
   isLoadingShifts = false;
 
   constructor(
@@ -224,7 +227,7 @@ export class VolunteerWizardComponent {
 
   onEventSelected(eventId: string) {
     console.log('Evento selecionado:', eventId);
-    this.selectedEvent = (this.events);
+    this.selectedEvent = this.events.find(e => e.id === eventId) || null;
     this.eventForm.patchValue({ event: eventId });
     if (this.selectedEvent) {
       this.loadJobs(eventId);
@@ -276,12 +279,14 @@ export class VolunteerWizardComponent {
   }
 
   onJobSelected(jobId: string) {
-    this.selectedJob = this.jobs.find((j: any) => j.id === jobId);
-    this.loadShifts(jobId);
+    this.selectedJob = this.jobs.find(j => j.id === jobId) || null;
+    if (this.selectedJob) {
+      this.loadShifts(jobId);
+    }
   }
 
   onShiftSelected(shiftId: string) {
-    this.selectedShift = this.shifts.find((s: any) => s.id === shiftId);
+    this.selectedShift = this.shifts.find(s => s.id === shiftId) || null;
   }
 
   get validEvents() {
