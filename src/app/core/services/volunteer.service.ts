@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Volunteer, VolunteerFilter } from '../../models/volunteer.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VolunteerService {
-  private readonly API_URL = 'http://localhost:3000/api/volunteers';
+  private readonly API_URL = environment.API_URL;
 
   constructor(private http: HttpClient) {}
 
@@ -29,5 +30,15 @@ export class VolunteerService {
 
   deleteVolunteer(id: string): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/${id}`);
+  }
+
+  getVolunteerByCpf(cpf: string): Observable<any> {
+    const cleanCpf = cpf.replace(/\D/g, '');
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<any>(`${this.API_URL}/bpv/cpf/${cleanCpf}`, { headers });
   }
 }

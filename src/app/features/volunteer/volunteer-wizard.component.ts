@@ -5,7 +5,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { VolunteerService } from '../../core/services/volunteer.service';
+import { EventService } from '../../core/services/event.service';
+import { JobService } from '../../core/services/job.service';
+import { ShiftService } from '../../core/services/shift.service';
 
 @Component({
   selector: 'app-volunteer-wizard',
@@ -17,6 +22,7 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatSelectModule,
     FormsModule,
     ReactiveFormsModule
   ],
@@ -33,10 +39,13 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
                   <p>Selecione o evento:</p>
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Evento</mat-label>
-                    <input matInput formControlName="event" placeholder="Digite o nome do evento">
+                    <mat-select formControlName="event" (selectionChange)="onEventSelected($event.value)">
+                      <mat-option *ngFor="let ev of events" [value]="ev?.id ? ev.id.toString() : null">{{ev?.name}}</mat-option>
+                    </mat-select>
                   </mat-form-field>
+                  <div *ngIf="isLoadingEvents" class="alert-info">Carregando eventos...</div>
                   <div class="actions">
-                    <button mat-raised-button color="primary" matStepperNext [disabled]="eventForm.invalid">Próximo</button>
+                    <button mat-raised-button color="primary" matStepperNext>Próximo</button>
                   </div>
                 </div>
               </form>
@@ -64,25 +73,48 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
                 </div>
               </form>
             </mat-step>
-            <mat-step>
-              <ng-template matStepLabel>Função</ng-template>
-              <div class="step-content">
-                <p>Selecione a função do voluntário (em breve...)</p>
-                <div class="actions">
-                  <button mat-raised-button color="primary" matStepperNext>Próximo</button>
+            <mat-step [stepControl]="jobForm">
+              <form [formGroup]="jobForm">
+                <ng-template matStepLabel>Função</ng-template>
+                <div class="step-content">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Selecione a função/posto</mat-label>
+                    <mat-select formControlName="job" (selectionChange)="onJobSelected($event.value)">
+                      <mat-option *ngFor="let job of jobs" [value]="job.id">{{job.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div *ngIf="isLoadingJobs" class="alert-info">Carregando funções/postos...</div>
+                  <div class="actions">
+                    <button mat-raised-button color="primary" matStepperNext [disabled]="jobForm.invalid">Próximo</button>
+                  </div>
                 </div>
-              </div>
+              </form>
             </mat-step>
-            <mat-step>
-              <ng-template matStepLabel>Horário</ng-template>
-              <div class="step-content">
-                <p>Selecione o horário do voluntário (em breve...)</p>
-                <div class="actions">
-                  <button mat-raised-button color="primary" (click)="stepper.reset()">Finalizar</button>
+            <mat-step [stepControl]="shiftForm">
+              <form [formGroup]="shiftForm">
+                <ng-template matStepLabel>Horário</ng-template>
+                <div class="step-content">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Selecione o horário</mat-label>
+                    <mat-select formControlName="shift" (selectionChange)="onShiftSelected($event.value)">
+                      <mat-option *ngFor="let shift of shifts" [value]="shift.id">{{shift.name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div *ngIf="isLoadingShifts" class="alert-info">Carregando horários...</div>
+                  <div class="actions">
+                    <button mat-raised-button color="primary" matStepperNext [disabled]="shiftForm.invalid">Finalizar</button>
+                  </div>
                 </div>
-              </div>
+              </form>
             </mat-step>
           </mat-horizontal-stepper>
+          <div *ngIf="isLoadingVolunteer" class="alert-info">Buscando voluntário...</div>
+          <div *ngIf="volunteerData" class="volunteer-result">
+            <b>Nome:</b> {{volunteerData.name}}<br>
+            <b>Email:</b> {{volunteerData.email}}<br>
+            <b>Telefone:</b> {{volunteerData.phone}}
+          </div>
+          <div *ngIf="volunteerError" class="alert-info">{{volunteerError}}</div>
         </mat-card-content>
       </mat-card>
     </div>
@@ -127,23 +159,131 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
       padding: 1rem;
       color: #bfa100;
     }
+    .volunteer-result {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #f5f5f5;
+      border-radius: 6px;
+    }
   `]
 })
 export class VolunteerWizardComponent {
   eventForm: FormGroup;
   cpfForm: FormGroup;
+  jobForm: FormGroup;
+  shiftForm: FormGroup;
+  volunteerData: any = null;
+  volunteerError: string | null = null;
+  isLoadingVolunteer = false;
+  events: any[] = [];
+  jobs: any[] = [];
+  selectedEvent: any = null;
+  selectedJob: any = null;
+  isLoadingEvents = false;
+  isLoadingJobs = false;
+  shifts: any[] = [];
+  selectedShift: any = null;
+  isLoadingShifts = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private volunteerService: VolunteerService,
+    private eventService: EventService,
+    private jobService: JobService,
+    private shiftService: ShiftService
+  ) {
     this.eventForm = this.fb.group({
-      event: ['', Validators.required]
+      event: [null, Validators.required]
     });
     this.cpfForm = this.fb.group({
       cpf: ['', Validators.required]
     });
+    this.jobForm = this.fb.group({
+      job: ['', Validators.required]
+    });
+    this.shiftForm = this.fb.group({
+      shift: ['', Validators.required]
+    });
+    this.loadEvents();
+  }
+
+  loadEvents() {
+    this.isLoadingEvents = true;
+    this.eventService.getOngoingEvents().subscribe({
+      next: (data) => {
+        this.events = data;
+        this.isLoadingEvents = false;
+      },
+      error: () => {
+        this.isLoadingEvents = false;
+      }
+    });
+  }
+
+  onEventSelected(eventId: string) {
+    if (!this.events || !eventId) {
+      this.selectedEvent = null;
+      return;
+    }
+    this.selectedEvent = (this.events.find((e: any) => e && e.id && e.id.toString() === eventId)) || null;
+    if (this.selectedEvent) {
+      this.loadJobs(eventId);
+      this.eventForm.get('event')?.markAsTouched();
+      this.eventForm.get('event')?.updateValueAndValidity();
+    }
+    console.log('Valor do form:', this.eventForm.value);
+  }
+
+  loadJobs(eventId: string) {
+    this.isLoadingJobs = true;
+    this.jobService.getJobsByEvent(eventId).subscribe({
+      next: (data) => {
+        this.jobs = data;
+        this.isLoadingJobs = false;
+      },
+      error: () => {
+        this.isLoadingJobs = false;
+      }
+    });
   }
 
   buscarVoluntario() {
-    // Lógica de busca de voluntário por CPF
-    // Em breve: integração com API
+    this.volunteerData = null;
+    this.volunteerError = null;
+    if (this.cpfForm.valid) {
+      this.isLoadingVolunteer = true;
+      this.volunteerService.getVolunteerByCpf(this.cpfForm.value.cpf).subscribe({
+        next: (data) => {
+          this.volunteerData = data;
+          this.isLoadingVolunteer = false;
+        },
+        error: (err) => {
+          this.volunteerError = 'Voluntário não encontrado ou erro na busca.';
+          this.isLoadingVolunteer = false;
+        }
+      });
+    }
+  }
+
+  loadShifts(jobId: string) {
+    this.isLoadingShifts = true;
+    this.shiftService.getShiftsByJob(jobId).subscribe({
+      next: (data) => {
+        this.shifts = data;
+        this.isLoadingShifts = false;
+      },
+      error: () => {
+        this.isLoadingShifts = false;
+      }
+    });
+  }
+
+  onJobSelected(jobId: string) {
+    this.selectedJob = this.jobs.find((j: any) => j.id === jobId);
+    this.loadShifts(jobId);
+  }
+
+  onShiftSelected(shiftId: string) {
+    this.selectedShift = this.shifts.find((s: any) => s.id === shiftId);
   }
 }

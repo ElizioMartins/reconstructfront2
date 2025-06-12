@@ -6,6 +6,7 @@ import { JobsComponent } from './features/jobs/jobs.component';
 import { PostsComponent } from './features/posts/posts.component';
 import { VolunteersComponent } from './features/volunteers/volunteers.component';
 import { authGuard } from './core/guards/auth.guard';
+import { VolunteerWizardComponent } from './features/volunteer/volunteer-wizard.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -32,6 +33,11 @@ export const routes: Routes = [
   {
     path: 'volunteers',
     component: VolunteersComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'voluntariado',
+    component: VolunteerWizardComponent,
     canActivate: [authGuard]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' }
