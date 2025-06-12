@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './VolunteerPage.css';
 import Sidebar from '../../components/Sidebar';
-import { getOngoingCelebrations,  getVolunteersByCpf } from '../../services/celebration.js';
+import { getOngoingCelebrations, getVolunteersByCpf, getVolunteerBpvByCpf } from '../../services/celebration.js';
+import { createStaff } from '../../services/staff.js';
 
 const VolunteerPage = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -9,11 +10,13 @@ const VolunteerPage = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [searchCpf, setSearchCpf] = useState('');
   const [volunteerData, setVolunteerData] = useState(null);
+  const [volunteerBpvData, setVolunteerBpvData] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const [timeData, setTimeData] = useState({ startAt: '', endAt: '' });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -43,6 +46,8 @@ const VolunteerPage = () => {
 
     fetchEvents();
   }, []);
+
+
 
   const handleSelectEvent = async (event) => {
     setSelectedEvent(event);
@@ -94,9 +99,17 @@ const VolunteerPage = () => {
 
     setIsLoading(true);
     try {
-      // Exemplo de requisição:
-      const res = await getVolunteersByCpf(searchCpf);
-      setVolunteerData(res);
+      const volunteerRes = await getVolunteersByCpf(searchCpf);
+      setVolunteerData(volunteerRes);
+      
+      try {
+        const bpvRes = await getVolunteerBpvByCpf(searchCpf);
+        setVolunteerBpvData(bpvRes);
+        console.log('Dados do BPV:', bpvRes);
+      } catch (bpvErr) {
+        console.warn('Erro ao buscar dados do BPV:', bpvErr.message);
+      }
+      
       setCurrentStep(3);
       setError('');
     } catch (err) {
@@ -106,24 +119,54 @@ const VolunteerPage = () => {
     }
   };
 
-  const handleSelectJob = (job) => {
-    setSelectedJob(job);
+  const handleSelectJob = async (job) => {
+    try {
+      setIsLoading(true);
+      setSelectedJob(job);
 
-    if (selectedEvent) {
-      const eventStart = new Date(selectedEvent.startAt);
-      const eventEnd = new Date(selectedEvent.endAt);
 
-      const formatDateForInput = (date) => {
-        return date.toISOString().slice(0, 16);
+      if (selectedEvent) {
+        const eventStart = new Date(selectedEvent.startAt);
+        const eventEnd = new Date(selectedEvent.endAt);
+
+        const formatDateForInput = (date) => {
+          return date.toISOString().slice(0, 16);
+        };
+
+        setTimeData({
+          startAt: formatDateForInput(eventStart),
+          endAt: formatDateForInput(eventEnd)
+        });
+      }
+      
+
+      const staffData = {
+        memberId: volunteerData.id,
+        celebrationJobLocationId: job.uuid,
+        description: ''
       };
+      
+      const response = await createStaff(staffData);
+      
 
-      setTimeData({
-        startAt: formatDateForInput(eventStart),
-        endAt: formatDateForInput(eventEnd)
+      setSubmitStatus({
+        success: true,
+        message: 'Voluntário alocado com sucesso!',
+        data: response
       });
-    }
+      
 
-    setCurrentStep(4);
+      setCurrentStep(4);
+    } catch (err) {
+      console.error('Erro ao alocar voluntário:', err);
+      setError(err.message || 'Erro ao alocar voluntário para esta função');
+      setSubmitStatus({
+        success: false,
+        message: err.message || 'Erro ao alocar voluntário para esta função'
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleTimeChange = (e) => {
@@ -182,6 +225,7 @@ const VolunteerPage = () => {
       setError('');
     }
   };
+
 
   const renderStepContent = () => {
     switch (currentStep) {
@@ -262,17 +306,20 @@ const VolunteerPage = () => {
           <div className="volunteer-job-selection">
             <h2>Selecionar Função</h2>
             <div className="selected-info">
-              <div className="selected-event-info">
-                <h3>Evento</h3>
-                <p><strong>Nome:</strong> {selectedEvent.name}</p>
-                <p><strong>Código:</strong> {selectedEvent.shortKey}</p>
-              </div>
-              <div className="selected-volunteer-info">
-                <h3>Voluntário</h3>
-                <p><strong>Nome:</strong> {volunteerData?.member.nomeCompleto}</p>
-                <p><strong>CPF:</strong> {volunteerData?.member.cpf}</p>
-                <p><strong>Cargo:</strong> {volunteerData?.member.cargo}</p>
-              </div>
+              {selectedEvent && (
+                <div className="selected-event-info">
+                  <h3>Evento</h3>
+                  <p><strong>Nome:</strong> {selectedEvent.name || 'Nome não disponível'}</p>
+                  <p><strong>Código:</strong> {selectedEvent.shortKey || 'Código não disponível'}</p>
+                </div>
+              )}
+              {volunteerData && (
+                <div className="selected-volunteer-info">
+                  <h3>Voluntário</h3>
+                  <p><strong>Nome de colete:</strong> {volunteerData.nomeColete || 'Nome não disponível'}</p>
+                  <p><strong>Cargo:</strong> {volunteerData.cargo || 'Cargo não disponível'}</p>
+                </div>
+              )}
             </div>
             <h3 className="section-title">Funções Disponíveis</h3>
             <div className="jobs-list">
@@ -283,16 +330,16 @@ const VolunteerPage = () => {
                   className="job-card"
                   onClick={() => handleSelectJob(job)}
                 >
-                  <h3>{job.job.name}</h3>
+                  <h3>{job.name}</h3>
                   <div className="job-details">
-                    <p><strong>Local:</strong> {job.location.name}</p>
-                    <p><strong>Descrição:</strong> {job.job.description}</p>
+                    <p><strong>Local:</strong> {job.location}</p>
+                    <p><strong>Descrição:</strong> {job.description}</p>
                     <div className="staff-info">
-                      <p><strong>Voluntários:</strong> {job.staffList.length} de {job.staffMax}</p>
+                      <p><strong>Voluntários:</strong> {0} de {job.staffMax}</p>
                       <div className="staff-bar">
                         <div 
                           className="staff-fill"
-                          style={{ width: `${(job.staffList.length / job.staffMax) * 100}%` }}
+                          style={{ width: `${(0 / job.staffMax) * 100}%` }}
                         ></div>
                       </div>
                     </div>
@@ -308,19 +355,25 @@ const VolunteerPage = () => {
           <div className="volunteer-time-selection">
             <h2>Definir Horário</h2>
             <div className="selected-info">
-              <div className="selected-event-info">
-                <h3>Evento</h3>
-                <p><strong>Nome:</strong> {selectedEvent.name}</p>
-              </div>
-              <div className="selected-volunteer-info">
-                <h3>Voluntário</h3>
-                <p><strong>Nome:</strong> {volunteerData?.member.nomeCompleto}</p>
-              </div>
-              <div className="selected-job-info">
-                <h3>Função</h3>
-                <p><strong>Função:</strong> {selectedJob?.job.name}</p>
-                <p><strong>Local:</strong> {selectedJob?.location.name}</p>
-              </div>
+              {selectedEvent && (
+                <div className="selected-event-info">
+                  <h3>Evento</h3>
+                  <p><strong>Nome:</strong> {selectedEvent.name || 'Nome não disponível'}</p>
+                </div>
+              )}
+              {volunteerData && (
+                <div className="selected-volunteer-info">
+                  <h3>Voluntário</h3>
+                  <p><strong>Nome:</strong> {volunteerData.member?.nomeCompleto || 'Nome não disponível'}</p>
+                </div>
+              )}
+              {selectedJob && (
+                <div className="selected-job-info">
+                  <h3>Função</h3>
+                  <p><strong>Função:</strong> {selectedJob.name || 'Função não disponível'}</p>
+                  <p><strong>Local:</strong> {selectedJob.location || 'Local não disponível'}</p>
+                </div>
+              )}
             </div>
             <form onSubmit={handleConfirmAllocation} className="time-form">
               <h3 className="section-title">Definir Período de Atuação</h3>
