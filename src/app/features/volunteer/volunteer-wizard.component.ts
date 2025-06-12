@@ -40,7 +40,7 @@ import { ShiftService } from '../../core/services/shift.service';
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Evento</mat-label>
                     <mat-select formControlName="event" (selectionChange)="onEventSelected($event.value)">
-                      <mat-option *ngFor="let ev of events" [value]="ev?.id ? ev.id.toString() : null">{{ev?.name}}</mat-option>
+                      <mat-option *ngFor="let ev of validEvents" [value]="ev.id.toString()">{{ev.name}}</mat-option>
                     </mat-select>
                   </mat-form-field>
                   <div *ngIf="isLoadingEvents" class="alert-info">Carregando eventos...</div>
@@ -221,17 +221,11 @@ export class VolunteerWizardComponent {
   }
 
   onEventSelected(eventId: string) {
-    if (!this.events || !eventId) {
-      this.selectedEvent = null;
-      return;
-    }
     this.selectedEvent = (this.events.find((e: any) => e && e.id && e.id.toString() === eventId)) || null;
+    this.eventForm.patchValue({ event: eventId });
     if (this.selectedEvent) {
       this.loadJobs(eventId);
-      this.eventForm.get('event')?.markAsTouched();
-      this.eventForm.get('event')?.updateValueAndValidity();
     }
-    console.log('Valor do form:', this.eventForm.value);
   }
 
   loadJobs(eventId: string) {
@@ -285,5 +279,9 @@ export class VolunteerWizardComponent {
 
   onShiftSelected(shiftId: string) {
     this.selectedShift = this.shifts.find((s: any) => s.id === shiftId);
+  }
+
+  get validEvents() {
+    return (this.events || []).filter(e => e && e.id);
   }
 }
