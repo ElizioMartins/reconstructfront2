@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { VolunteerService } from '../../core/services/volunteer.service';
 import { EventService } from '../../core/services/event.service';
@@ -23,6 +24,7 @@ import { ShiftService } from '../../core/services/shift.service';
     MatButtonModule,
     MatIconModule,
     MatSelectModule,
+    MatFormFieldModule,
     FormsModule,
     ReactiveFormsModule
   ],
@@ -40,7 +42,7 @@ import { ShiftService } from '../../core/services/shift.service';
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Evento</mat-label>
                     <mat-select formControlName="event" (selectionChange)="onEventSelected($event.value)">
-                      <mat-option *ngFor="let ev of validEvents" [value]="ev.id.toString()">{{ev.name}}</mat-option>
+                      <mat-option *ngFor="let ev of validEvents" [value]="ev">{{ev.name}}</mat-option>
                     </mat-select>
                   </mat-form-field>
                   <div *ngIf="isLoadingEvents" class="alert-info">Carregando eventos...</div>
@@ -221,7 +223,8 @@ export class VolunteerWizardComponent {
   }
 
   onEventSelected(eventId: string) {
-    this.selectedEvent = (this.events.find((e: any) => e && e.id && e.id.toString() === eventId)) || null;
+    console.log('Evento selecionado:', eventId);
+    this.selectedEvent = (this.events);
     this.eventForm.patchValue({ event: eventId });
     if (this.selectedEvent) {
       this.loadJobs(eventId);
@@ -282,6 +285,6 @@ export class VolunteerWizardComponent {
   }
 
   get validEvents() {
-    return (this.events || []).filter(e => e && e.id);
+    return (this.events);
   }
 }
