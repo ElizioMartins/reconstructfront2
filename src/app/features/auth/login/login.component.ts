@@ -9,6 +9,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Router } from '@angular/router';
 import { LoginCredentials } from '../../../models/user.model';
+import { AuthService } from '../../../core/services/auth.service';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -89,6 +92,7 @@ import { LoginCredentials } from '../../../models/user.model';
               Acessar
               <span class="loading-spinner" *ngIf="isLoading"></span>
             </button>
+            <div class="error-message" *ngIf="loginError">{{loginError}}</div>
           </form>
 
           <div class="support-contact">
@@ -106,284 +110,18 @@ import { LoginCredentials } from '../../../models/user.model';
       </div>
     </div>
   `,
-  styles: [`
-    .login-container {
-      display: flex;
-      height: 100vh;
-      width: 100%;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-      box-sizing: border-box;
-      background-color: white;
-    }
-
-    .login-background {
-      flex: 1;
-      background-color: #000000;
-      background-image: url('assets/banner/Rectangle.png');
-      background-size: cover;
-      background-position: center;
-      position: relative;
-    }
-
-    .photo-credit {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      color: white;
-      font-size: 12px;
-      opacity: 0.7;
-    }
-
-    .login-form-container {
-      width: 550px;
-      min-width: 550px;
-      background-color: white;
-      display: flex;
-      flex-direction: column;
-      padding: 0px 50px;
-      box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-      overflow-y: auto;
-      justify-content: center;
-    }
-
-    .login-header {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-    }
-
-    .logo-title-container {
-      display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-      align-self: center;
-    }
-
-    .logo {
-      width: 18%;
-      height: auto;
-      margin-right: 5%;
-      min-width: 80px;
-      max-width: 120px;
-    }
-
-    .welcome-text {
-      font-size: 26px;
-      margin: 0;
-      color: #333;
-      font-weight: 500;
-      margin-bottom: 15px;
-      margin-top: 5px;
-      align-self: center;
-    }
-
-    .title-container {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .title-container h1 {
-      font-size: 22px;
-      margin: 0;
-      color: #333;
-      font-weight: 600;
-    }
-
-    .title-container h2 {
-      font-size: 22px;
-      margin: 0;
-      color: #333;
-      font-weight: 600;
-    }
-
-    .login-form {
-      flex: 0;
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-    }
-
-    .form-group {
-      margin-bottom: 25px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 10px;
-      font-size: 16px;
-      color: #666;
-      font-weight: normal;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 12px 15px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 16px;
-      background-color: #f8f8f8;
-      box-sizing: border-box;
-      color: #333;
-    }
-
-    .password-input-container {
-      position: relative;
-    }
-
-    .password-toggle {
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      color: #666;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .form-options {
-      align-items: center;
-      margin-bottom: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      width: 100%;
-    }
-
-    .remember-me {
-      display: flex;
-      align-items: center;
-    }
-
-    .forgot-password {
-      color: #0078ff;
-      text-decoration: none;
-      font-size: 16px;
-    }
-
-    .login-button {
-      background-color: #0078ff;
-      color: white;
-      border: none;
-      padding: 14px;
-      border-radius: 6px;
-      font-size: 18px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      width: 100%;
-    }
-
-    .login-button:hover {
-      background-color: #0065d9;
-    }
-
-    .support-contact {
-      margin-top: 0 !important;
-      margin-bottom: 30px;
-    }
-
-    .support-button {
-      width: 100%;
-      padding: 14px;
-      background-color: #333;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-      margin-top: 15px;
-    }
-
-    .login-footer {
-      text-align: center;
-    }
-
-    .footer-logos {
-      display: flex;
-      justify-content: center;
-      gap: 8%;
-      width: 100%;
-    }
-
-    .footer-logos img {
-      width: 15%;
-      height: auto;
-      min-width: 50px;
-      max-width: 90px;
-      margin: 0;
-      object-fit: contain;
-    }
-
-    .login-footer p {
-      font-size: 12px;
-      color: #666;
-      margin-top: 5px;
-      margin-bottom: 0;
-    }
-
-    .error-message {
-      color: #ff0000;
-      font-size: 14px;
-      margin-top: 5px;
-    }
-
-    .loading-spinner {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255,255,255,.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: rotation 1s ease infinite;
-      margin-left: 10px;
-    }
-
-    @keyframes rotation {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    @media (max-width: 1200px) {
-      .login-form-container {
-        width: 450px;
-        min-width: 450px;
-        padding: 25px 35px;
-      }
-
-      .logo {
-        max-width: 100px;
-      }
-
-      .footer-logos img {
-        max-width: 75px;
-      }
-    }
-
-    @media (max-width: 992px) {
-      .login-background {
-        display: none;
-      }
-
-      .login-form-container {
-        width: 100%;
-        min-width: 100%;
-        padding: 25px;
-      }
-    }
-  `]
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
   loginForm: FormGroup;
   showPassword = false;
   isLoading = false;
+  loginError: string | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
@@ -399,16 +137,29 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.isLoading = true;
-      const credentials: LoginCredentials = {
-        email: this.loginForm.value.username,
+      this.loginError = null;
+      const credentials: any = {
+        username: this.loginForm.value.username,
         password: this.loginForm.value.password
       };
-      // TODO: Implementar serviço de autenticação
-      console.log('Login attempt:', credentials);
-      setTimeout(() => {
+      this.authService.login(credentials).pipe(
+        catchError((err) => {
+          this.loginError = 'Usuário ou senha inválidos';
+          this.isLoading = false;
+          return of(null);
+        })
+      ).subscribe((res) => {
         this.isLoading = false;
-        this.router.navigate(['/volunteers']);
-      }, 1000);
+        if (res && res.token) {
+          localStorage.setItem('token', res.token);
+          if (res.user) {
+            localStorage.setItem('user', JSON.stringify(res.user));
+          }
+          this.router.navigate(['/volunteers']);
+        } else if (!this.loginError) {
+          this.loginError = 'Usuário ou senha inválidos';
+        }
+      });
     }
   }
 }
