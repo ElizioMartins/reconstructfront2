@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
   standalone: true,
   imports: [CommonModule, MatCardModule, MatIconModule],
   template: `
-    <div class="dashboard-container">
+    <div class="cardform">
       <h1>Dashboard</h1>
       <div class="dashboard-grid">
         <mat-card class="dashboard-card">

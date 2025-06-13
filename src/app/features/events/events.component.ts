@@ -10,10 +10,10 @@ import { MatDialogModule } from '@angular/material/dialog';
   standalone: true,
   imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule, MatDialogModule],
   template: `
-    <div class="events-container">
+    <div class="cardform">
       <div class="header">
         <h1>Eventos</h1>
-        <button mat-raised-button color="primary">
+        <button mat-raised-button color="primary" class="custom-button">
           <mat-icon>add</mat-icon>
           Novo Evento
         </button>

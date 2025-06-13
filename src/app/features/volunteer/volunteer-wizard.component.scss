@@ -1,16 +1,17 @@
-.volunteer-wizard-container {
-  padding: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  background: #f8f8f8;
-  min-height: 100vh;
-}
+// .volunteer-wizard-container {
+//   padding: 2rem;
+//   display: flex;
+//   justify-content: center;
+//   align-items: flex-start;
+//   background: #f8f8f8;
+//   min-height: 100vh;
+// }
 
 mat-card {
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
+  margin: 20px ;
+  border-radius: 6px;
+
+
 }
 
 .step-content {
