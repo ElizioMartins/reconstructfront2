@@ -1,0 +1,55 @@
+<div class="cardform">
+  <div class="header">
+    <h1>Eventos</h1>
+    <div class="search-container">
+      <mat-form-field appearance="outline">
+        <mat-label>Buscar evento por ID</mat-label>
+        <input matInput [(ngModel)]="eventId" placeholder="Digite o ID do evento">
+        <button mat-icon-button matSuffix (click)="searchEvent()" [disabled]="isLoading">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="events-container" *ngIf="!isLoading">
+    <mat-card class="event-card" *ngIf="event">
+      <mat-card-header>
+        <mat-card-title>{{event.name}}</mat-card-title>
+        <mat-card-subtitle>ID: {{event.uuid}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Observação:</strong> {{event.observation}}</p>
+        <p><strong>Chave Curta:</strong> {{event.shortKey}}</p>
+        <p><strong>Início:</strong> {{event.startAt | date:'dd/MM/yyyy, HH:mm'}}</p>
+        <p><strong>Término:</strong> {{event.endAt | date:'dd/MM/yyyy, HH:mm'}}</p>
+        <p><strong>Ticket de Impressão:</strong> {{event.printTicketCelebration}}</p>
+      </mat-card-content>
+      <!-- <mat-card-actions align="end">
+        <button mat-button color="primary">
+          <mat-icon>edit</mat-icon>
+          EDITAR
+        </button>
+        <button mat-button color="warn">
+          <mat-icon>delete</mat-icon>
+          EXCLUIR
+        </button>
+      </mat-card-actions> -->
+    </mat-card>
+
+    <div class="no-events" *ngIf="!event && !error">
+      <mat-icon>event_busy</mat-icon>
+      <p>Nenhum evento encontrado. Use a busca acima para encontrar eventos.</p>
+    </div>
+  </div>
+
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Buscando evento...</p>
+  </div>
+
+  <div class="error-container" *ngIf="error">
+    <mat-icon color="warn">error</mat-icon>
+    <p class="error-message">{{error}}</p>
+  </div>
+</div>

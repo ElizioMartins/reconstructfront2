@@ -8,7 +8,7 @@ import { Job } from '../models/job.model';
 export class JobService {
   private readonly API_URL = environment.API_URL;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getJobsById(jobId: string): Observable<Job> {
     return this.http.get<Job>(`${this.API_URL}/bpv/jobs/${jobId}`, this.getHttpOptions());

@@ -8,7 +8,7 @@ import { Shift } from '../models/shift.model';
 export class ShiftService {
   private readonly API_URL = environment.API_URL;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   private getHttpOptions() {
     const token = localStorage.getItem('token');

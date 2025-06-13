@@ -26,10 +26,10 @@ import { MatIconModule } from '@angular/material/icon';
         <mat-icon matListItemIcon>assignment</mat-icon>
         <span matListItemTitle>Postos</span>
       </a>
-      <a mat-list-item routerLink="/volunteers">
+      <!-- <a mat-list-item routerLink="/volunteers">
         <mat-icon matListItemIcon>volunteer_activism</mat-icon>
         <span matListItemTitle>Voluntários</span>
-      </a>
+      </a> -->
       <a mat-list-item routerLink="/voluntariado">
         <mat-icon matListItemIcon>group</mat-icon>
         <span matListItemTitle>Voluntariado</span>

@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
 export class VolunteerService {
   private readonly API_URL = environment.API_URL;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getVolunteers(filter?: VolunteerFilter): Observable<Volunteer[]> {
     return this.http.get<Volunteer[]>(this.API_URL, { params: filter as any });
