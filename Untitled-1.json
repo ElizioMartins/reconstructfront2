@@ -1,0 +1,493 @@
+[
+    {
+        "uuid": "cd22fd41-1fce-4fde-984d-9414b67f5472",
+        "createdAt": "2025-06-03T03:00:00.000+00:00",
+        "name": "Bonde Pela Vida - 5ª edição",
+        "observation": "Texto de Observação",
+        "shortKey": "bpv5e",
+        "startAt": "2025-06-03T03:00:00.000+00:00",
+        "endAt": "2025-07-06T03:00:00.000+00:00",
+        "locationList": [
+            {
+                "uuid": "2972b9c0-56fe-44d8-8277-5c1701c27dcc",
+                "createdAt": "2025-06-03T03:00:00.000+00:00",
+                "name": "Base 1 Caveira",
+                "description": "Acompanhar e coordenar os demais staffs em campo, facilitar a comunicação e centralização das informações e estratégias, direcionar o staffs para os postos de rendição e dar baixa nos staffs que concluíram sua jornada",
+                "shortKey": "base1",
+                "celebrationJobLocationList": [
+                    {
+                        "uuid": "1e189ea6-9e71-49c0-9589-720af90d272e",
+                        "createdAt": "2025-06-03T03:00:00.000+00:00",
+                        "job": {
+                            "uuid": "d08a2567-d90c-43a7-8648-41641897d2c6",
+                            "createdAt": "2025-06-03T03:00:00.000+00:00",
+                            "name": "Ronda",
+                            "description": "Realizar ronda",
+                            "shortKey": "ronda",
+                            "printTicketJob": null
+                        },
+                        "staffMin": 10,
+                        "staffMax": 30,
+                        "staffMid": 20,
+                        "priority": 1,
+                        "defaultJobTimeInMinutes": 120
+                    }
+                ],
+                "geoLocation": null,
+                "printTicketLocation": "base1"
+            },
+            {
+                "uuid": "36f424f1-2dd2-4318-a4c8-6cb197e44c8b",
+                "createdAt": "2025-06-03T03:00:00.000+00:00",
+                "name": "Camping",
+                "description": "O integrante nessa função deverá estar atento à movimentação de pessoas no perímetro estabelecido, certificar-se de que pessoas estranhas entrem no espaço de camping dos integrantes, reportar situações suspeitas.",
+                "shortKey": "camping",
+                "celebrationJobLocationList": [
+                    {
+                        "uuid": "fbe868b8-d2b5-471e-bbf8-77e92ba7d819",
+                        "createdAt": "2025-06-03T03:00:00.000+00:00",
+                        "job": {
+                            "uuid": "d3f2f477-9fbd-4dc0-ab73-4273e0505182",
+                            "createdAt": "2025-06-03T03:00:00.000+00:00",
+                            "name": "Segurança",
+                            "description": "Garantir segurança e ordem",
+                            "shortKey": "seg",
+                            "printTicketJob": null
+                        },
+                        "staffMin": 15,
+                        "staffMax": 35,
+                        "staffMid": 25,
+                        "priority": 10,
+                        "defaultJobTimeInMinutes": 60
+                    }
+                ],
+                "geoLocation": null,
+                "printTicketLocation": "camping"
+            },
+            {
+                "uuid": "b4a69aa4-b066-4f03-934d-ad99663d8f9d",
+                "createdAt": "2025-06-03T03:00:00.000+00:00",
+                "name": "Estac. Grau V",
+                "description": "O integrante nessa função deverá estar atento à movimentação de pessoas próximo as motos, se o grau está de acordo com as motos que estão paradas naquele local, auxiliar nos integrantes do grau equivalente ao estacionamento nas chegadas e saídas de motos.",
+                "shortKey": "est_v",
+                "celebrationJobLocationList": [
+                    {
+                        "uuid": "6388847f-eb35-4696-bf3e-a05dfa847171",
+                        "createdAt": "2025-06-03T03:00:00.000+00:00",
+                        "job": {
+                            "uuid": "b678aac3-6aaa-4d00-ae55-f31188b82f40",
+                            "createdAt": "2025-06-03T03:00:00.000+00:00",
+                            "name": "VIP",
+                            "description": "Contenção de VIP",
+                            "shortKey": "vip",
+                            "printTicketJob": null
+                        },
+                        "staffMin": 11,
+                        "staffMax": 31,
+                        "staffMid": 21,
+                        "priority": 5,
+                        "defaultJobTimeInMinutes": 90
+                    }
+                ],
+                "geoLocation": null,
+                "printTicketLocation": "est_v"
+            }
+        ],
+        "celebrationJobLocationList": [
+            {
+                "uuid": "1e189ea6-9e71-49c0-9589-720af90d272e",
+                "createdAt": "2025-06-03T03:00:00.000+00:00",
+                "job": {
+                    "uuid": "d08a2567-d90c-43a7-8648-41641897d2c6",
+                    "createdAt": "2025-06-03T03:00:00.000+00:00",
+                    "name": "Ronda",
+                    "description": "Realizar ronda",
+                    "shortKey": "ronda",
+                    "printTicketJob": null
+                },
+                "staffMin": 10,
+                "staffMax": 30,
+                "staffMid": 20,
+                "priority": 1,
+                "defaultJobTimeInMinutes": 120
+            },
+            {
+                "uuid": "fbe868b8-d2b5-471e-bbf8-77e92ba7d819",
+                "createdAt": "2025-06-03T03:00:00.000+00:00",
+                "job": {
+                    "uuid": "d3f2f477-9fbd-4dc0-ab73-4273e0505182",
+                    "createdAt": "2025-06-03T03:00:00.000+00:00",
+                    "name": "Segurança",
+                    "description": "Garantir segurança e ordem",
+                    "shortKey": "seg",
+                    "printTicketJob": null
+                },
+                "staffMin": 15,
+                "staffMax": 35,
+                "staffMid": 25,
+                "priority": 10,
+                "defaultJobTimeInMinutes": 60
+            },
+            {
+                "uuid": "6388847f-eb35-4696-bf3e-a05dfa847171",
+                "createdAt": "2025-06-03T03:00:00.000+00:00",
+                "job": {
+                    "uuid": "b678aac3-6aaa-4d00-ae55-f31188b82f40",
+                    "createdAt": "2025-06-03T03:00:00.000+00:00",
+                    "name": "VIP",
+                    "description": "Contenção de VIP",
+                    "shortKey": "vip",
+                    "printTicketJob": null
+                },
+                "staffMin": 11,
+                "staffMax": 31,
+                "staffMid": 21,
+                "priority": 5,
+                "defaultJobTimeInMinutes": 90
+            }
+        ],
+        "printTicketCelebration": "celebration.bpv"
+    }
+]
+
+cadastrar novo evento
+
+{
+  "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "createdAt": "2025-06-13T11:57:06.499Z",
+  "celebrationEvent": {
+    "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "createdAt": "2025-06-13T11:57:06.499Z",
+    "name": "string",
+    "observation": "string",
+    "shortKey": "string",
+    "startAt": "2025-06-13T11:57:06.499Z",
+    "endAt": "2025-06-13T11:57:06.499Z",
+    "locationList": [
+      {
+        "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "createdAt": "2025-06-13T11:57:06.499Z",
+        "name": "string",
+        "description": "string",
+        "shortKey": "string",
+        "celebrationLocation": "string",
+        "celebrationJobLocationList": [
+          {
+            "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "createdAt": "2025-06-13T11:57:06.499Z",
+            "celebration": "string",
+            "location": "string",
+            "job": {
+              "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "createdAt": "2025-06-13T11:57:06.499Z",
+              "name": "string",
+              "description": "string",
+              "shortKey": "string",
+              "printTicketJob": "string"
+            },
+            "staffMin": 1073741824,
+            "staffMax": 1073741824,
+            "staffMid": 1073741824,
+            "priority": 1073741824,
+            "defaultJobTimeInMinutes": 1073741824
+          }
+        ],
+        "geoLocation": {
+          "x": 0.1,
+          "y": 0.1
+        },
+        "printTicketLocation": "string"
+      }
+    ],
+    "celebrationJobLocationList": [
+      {
+        "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "createdAt": "2025-06-13T11:57:06.499Z",
+        "celebration": "string",
+        "location": "string",
+        "job": {
+          "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "createdAt": "2025-06-13T11:57:06.499Z",
+          "name": "string",
+          "description": "string",
+          "shortKey": "string",
+          "printTicketJob": "string"
+        },
+        "staffMin": 1073741824,
+        "staffMax": 1073741824,
+        "staffMid": 1073741824,
+        "priority": 1073741824,
+        "defaultJobTimeInMinutes": 1073741824
+      }
+    ],
+    "printTicketCelebration": "string"
+  },
+  "staff": {
+    "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "createdAt": "2025-06-13T11:57:06.499Z",
+    "member": {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "cpf": "stringstrin",
+      "numeroSistema": 1073741824,
+      "nomeColete": "string",
+      "nomeCompleto": "string",
+      "comandoRegional": "string",
+      "regional": "string",
+      "divisao": "string",
+      "cargo": "string",
+      "telefoneCelular": "string",
+      "erro": "string"
+    },
+    "currentEvent": "string",
+    "startAt": "2025-06-13T11:57:06.499Z"
+  },
+  "eventType": {
+    "name": "string",
+    "description": "string",
+    "eventTypeEnum": "scheduler"
+  },
+  "description": "string",
+  "doneBy": {
+    "username": "string",
+    "name": "string"
+  }
+}
+
+
+events type : [
+  {
+    "name": "Agendado",
+    "description": "Agendamento de inicio de função ",
+    "eventTypeEnum": "scheduler"
+  },
+  {
+    "name": "Concuido",
+    "description": "Conclusão do trabalho de Staff com sucesso",
+    "eventTypeEnum": "end_success"
+  },
+  {
+    "name": "Iniciado",
+    "description": "Inicío do trabalho",
+    "eventTypeEnum": "start"
+  },
+  {
+    "name": "Deserção",
+    "description": "Integrante não deu baixa na staff e não foi encontrado",
+    "eventTypeEnum": "end_failure"
+  },
+  {
+    "name": "Ocorrencia",
+    "description": "Registro de ocorrencia Simples",
+    "eventTypeEnum": "notification"
+  },
+  {
+    "name": "Disciplina",
+    "description": "Registro de evento disciplinar",
+    "eventTypeEnum": "notification"
+  },
+  {
+    "name": "Troca Função",
+    "description": "Troca de posto de trabalho",
+    "eventTypeEnum": "change_job"
+  }
+]
+
+retorna a alocação por membro
+
+	https://sgs-api-stage.18mc.com.br/bpv/celebrationJobLocations/cd22fd41-1fce-4fde-984d-9414b67f5472/job-summary/03480553745
+Response body
+Download
+[
+  {
+    "location": "Base 1 Caveira",
+    "job": "Ronda",
+    "agendados": 0,
+    "desejado": 10,
+    "ativos": 0
+  },
+  {
+    "location": "Camping",
+    "job": "Segurança",
+    "agendados": 1,
+    "desejado": 15,
+    "ativos": 0
+  },
+  {
+    "location": "Estac. Grau V",
+    "job": "VIP",
+    "agendados": 0,
+    "desejado": 11,
+    "ativos": 0
+  }
+]
+
+POST
+bvp/celebrationJobLocations
+https://sgs-api-stage.18mc.com.br/bpv/celebrationJobLocations
+{
+  "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "createdAt": "2025-06-13T12:03:29.673Z",
+  "celebration": "string",
+  "location": "string",
+  "job": {
+    "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "createdAt": "2025-06-13T12:03:29.673Z",
+    "name": "string",
+    "description": "string",
+    "shortKey": "string",
+    "printTicketJob": "string"
+  },
+  "staffMin": 1073741824,
+  "staffMax": 1073741824,
+  "staffMid": 1073741824,
+  "priority": 1073741824,
+  "defaultJobTimeInMinutes": 1073741824
+}
+
+GET
+bvp/celebrationJobLocations/{id}
+https://sgs-api-stage.18mc.com.br/bpv/celebrationJobLocations/6388847f-eb35-4696-bf3e-a05dfa847171
+{
+  "uuid": "6388847f-eb35-4696-bf3e-a05dfa847171",
+  "createdAt": "2025-06-03T03:00:00.000+00:00",
+  "job": {
+    "uuid": "b678aac3-6aaa-4d00-ae55-f31188b82f40",
+    "createdAt": "2025-06-03T03:00:00.000+00:00",
+    "name": "VIP",
+    "description": "Contenção de VIP",
+    "shortKey": "vip",
+    "printTicketJob": null
+  },
+  "staffMin": 11,
+  "staffMax": 31,
+  "staffMid": 21,
+  "priority": 5,
+  "defaultJobTimeInMinutes": 90
+}
+
+
+POST
+bvp/locations
+https://sgs-api-stage.18mc.com.br/bpv/locations
+{
+  "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "createdAt": "2025-06-13T12:12:20.330Z",
+  "name": "string",
+  "description": "string",
+  "shortKey": "string",
+  "celebrationLocation": "string",
+  "celebrationJobLocationList": [
+    {
+      "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "createdAt": "2025-06-13T12:12:20.330Z",
+      "celebration": "string",
+      "location": "string",
+      "job": {
+        "uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "createdAt": "2025-06-13T12:12:20.330Z",
+        "name": "string",
+        "description": "string",
+        "shortKey": "string",
+        "printTicketJob": "string"
+      },
+      "staffMin": 1073741824,
+      "staffMax": 1073741824,
+      "staffMid": 1073741824,
+      "priority": 1073741824,
+      "defaultJobTimeInMinutes": 1073741824
+    }
+  ],
+  "geoLocation": {
+    "x": 0.1,
+    "y": 0.1
+  },
+  "printTicketLocation": "string"
+}
+
+
+
+GET
+bpv/locations/{id}
+https://sgs-api-stage.18mc.com.br/bpv/locations/b4a69aa4-b066-4f03-934d-ad99663d8f9d
+  {
+                "uuid": "b4a69aa4-b066-4f03-934d-ad99663d8f9d",
+                "createdAt": "2025-06-03T03:00:00.000+00:00",
+                "name": "Estac. Grau V",
+                "description": "O integrante nessa função deverá estar atento à movimentação de pessoas próximo as motos, se o grau está de acordo com as motos que estão paradas naquele local, auxiliar nos integrantes do grau equivalente ao estacionamento nas chegadas e saídas de motos.",
+                "shortKey": "est_v",
+                "celebrationJobLocationList": [
+                    {
+                        "uuid": "6388847f-eb35-4696-bf3e-a05dfa847171",
+                        "createdAt": "2025-06-03T03:00:00.000+00:00",
+                        "job": {
+                            "uuid": "b678aac3-6aaa-4d00-ae55-f31188b82f40",
+                            "createdAt": "2025-06-03T03:00:00.000+00:00",
+                            "name": "VIP",
+                            "description": "Contenção de VIP",
+                            "shortKey": "vip",
+                            "printTicketJob": null
+                        },
+                        "staffMin": 11,
+                        "staffMax": 31,
+                        "staffMid": 21,
+                        "priority": 5,
+                        "defaultJobTimeInMinutes": 90
+                    }
+                ],
+                "geoLocation": null,
+                "printTicketLocation": "est_v"
+            }
+
+
+
+pelo log da rede o cadastro do staff é feito no bpv/staff
+POST
+
+https://sgs-api-stage.18mc.com.br/bpv/staffs
+
+esse serio o payload:
+
+celebrationJobLocationId
+: 
+"1e189ea6-9e71-49c0-9589-720af90d272e"
+description
+: 
+""
+memberId
+: 
+"736c600c-3d4b-4afd-bbb7-45826f724acf"
+
+aqui temos o resultado do cadastro do staff:
+
+{
+    "uuid": "b774b551-342d-47ac-b551-dd2aa9a25985",
+    "createdAt": "2025-06-12T14:29:21.899+00:00",
+    "member": {
+        "id": "736c600c-3d4b-4afd-bbb7-45826f724acf",
+        "cpf": "03480553745",
+        "numeroSistema": 267961,
+        "nomeColete": "45",
+        "nomeCompleto": "Elizio Martins Cezarino",
+        "comandoRegional": "Comando Regional XVII",
+        "regional": "REGIONAL ESPIRITO SANTO - ES",
+        "divisao": "Divisão Vitória - ES",
+        "cargo": "Camiseta (Grau X)",
+        "telefoneCelular": "55(27)997057074",
+        "erro": null
+    },
+    "currentEvent": {
+        "uuid": "8b6deeb6-5201-49f4-b41d-2a7d45fae22b",
+        "createdAt": "2025-06-13T12:25:48.403+00:00",
+        "eventType": {
+            "name": "Iniciado",
+            "description": "Inicío do trabalho",
+            "eventTypeEnum": "start"
+        },
+        "description": "",
+        "doneBy": {
+            "username": "admin",
+            "name": "Master Admin"
+        }
+    },
+    "startAt": null
+}

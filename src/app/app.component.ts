@@ -58,31 +58,7 @@ import { HttpClientModule } from '@angular/common/http';
       </div>
     </ng-template>
   `,
-  styles: [`
-    .sidenav-container {
-      height: 100vh;
-    }
 
-    .sidenav {
-      width: 250px;
-    }
-
-    .content {
-      padding: 20px;
-    }
-
-    .spacer {
-      flex: 1 1 auto;
-    }
-
-    .login-wrapper {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #fff;
-    }
-  `]
 })
 export class AppComponent {
   constructor(
