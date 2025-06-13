@@ -12,11 +12,11 @@ export class StaffService {
   constructor(private readonly http: HttpClient) {}
 
   createStaff(data: {
+    memberId: string;
     celebrationJobLocationId: string;
     description: string;
-    memberId: string;
 
   }): Observable<any> {
-    return this.http.post(`${this.API_URL}/bpv/staff`, data);
+    return this.http.post(`${this.API_URL}/bpv/staffs`, data);
   }
 }

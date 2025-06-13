@@ -210,12 +210,12 @@ export class VolunteerWizardComponent {
       });
       return;
     }
-
     const staffData = {
+      memberId: this.volunteerData.id,
       celebrationJobLocationId: this.selectedEvent.uuid,
       description:"",
-      memberId: this.volunteerData.id,
     };
+    console.log('Dados do voluntário:', staffData);
 
     this.staffService.createStaff(staffData).subscribe({
       next: () => {
