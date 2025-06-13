@@ -32,8 +32,8 @@ import { HttpClientModule } from '@angular/common/http';
             [opened]="true">
           <app-sidebar></app-sidebar>
         </mat-sidenav>
-        <mat-sidenav-content>
-          <mat-toolbar color="primary">
+        <mat-sidenav-content class="navbar">
+          <mat-toolbar >
             <button
               type="button"
               mat-icon-button
@@ -58,12 +58,43 @@ import { HttpClientModule } from '@angular/common/http';
       </div>
     </ng-template>
   `,
+  styles: [`
+    .sidenav-container {
+      height: 100vh;
+    }
 
+    .sidenav {
+      width: 280px;
+      box-shadow: 3px 0 6px rgba(0,0,0,.24);
+    }
+
+    .navbar {
+      background: #f5f5f5;
+    }
+
+    .spacer {
+      flex: 1 1 auto;
+    }
+
+    mat-toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    }
+
+    .content {
+      padding: 20px;
+      background: #f5f5f5;
+      min-height: calc(100vh - 64px);
+    }
+  `]
 })
 export class AppComponent {
   constructor(
-    private authService: AuthService,
-    private router: Router
+    private readonly authService: AuthService,
+    private readonly router: Router
   ) {}
 
   isAuthenticated(): boolean {

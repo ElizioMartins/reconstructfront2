@@ -35,15 +35,41 @@ import { MatIconModule } from '@angular/material/icon';
         <span matListItemTitle>Voluntariado</span>
       </a>
     </mat-nav-list>
-  `,
-  styles: [`
+  `,  styles: [`
     :host {
       display: block;
       height: 100%;
+      min-width: 280px;
+      background: url('/assets/images/fundo_comandoClaro.jpg') no-repeat center center fixed;
+      background-size: cover;
     }
 
     mat-nav-list {
-      padding-top: 16px;
+      padding: 26px 16px;
+    }
+
+    .mat-mdc-list-item {
+      margin-bottom: 8px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateX(5px);
+      }
+    }
+
+    .mat-icon {
+      margin-right: 12px;
+      color: white;
+    }
+
+    span[matListItemTitle] {
+      font-size: 1rem;
+      //color: white;
+      letter-spacing: 0.5px;
     }
   `]
 })
