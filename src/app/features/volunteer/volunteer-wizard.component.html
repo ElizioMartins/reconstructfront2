@@ -1,0 +1,98 @@
+<div class="volunteer-wizard-container">
+  <mat-card>
+    <mat-card-title>Voluntariado</mat-card-title>
+    <mat-card-content>
+      <mat-horizontal-stepper [linear]="true" #stepper>
+        <mat-step [stepControl]="eventForm">
+          <form [formGroup]="eventForm">
+            <ng-template matStepLabel>Evento</ng-template>
+            <div class="step-content">
+              <p>Selecione o evento:</p>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Evento</mat-label>
+                <mat-select formControlName="event" (selectionChange)="onEventSelected($event.value)">
+                  <mat-option *ngFor="let ev of validEvents" [value]="ev">{{ev.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div *ngIf="isLoadingEvents" class="alert-info">Carregando eventos...</div>
+              <div class="actions">
+                <button mat-raised-button color="primary" matStepperNext>Próximo</button>
+              </div>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step [stepControl]="cpfForm">
+          <form [formGroup]="cpfForm">
+            <ng-template matStepLabel>Voluntário</ng-template>
+            <div class="step-content">
+              <div class="event-details">
+                <strong>Evento Selecionado</strong><br>
+                <span><b>Nome:</b> {{selectedEvent?.name || '---'}}</span><br>
+                <span><b>Código:</b> {{selectedEvent?.code || '---'}}</span><br>
+                <span><b>Período:</b> {{selectedEvent?.startDate | date:'dd/MM/yyyy, HH:mm'}} até {{selectedEvent?.endDate | date:'dd/MM/yyyy, HH:mm'}}</span>
+              </div>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Digite o CPF do voluntário</mat-label>
+                <input matInput formControlName="cpf" placeholder="Digite o CPF do voluntário">
+              </mat-form-field>
+              <div class="actions">
+                <button mat-raised-button color="primary" (click)="buscarVoluntario()" [disabled]="cpfForm.invalid">Buscar</button>
+              </div>
+              <div *ngIf="!cpfForm.value.cpf" class="alert-info">
+                Digite o CPF do voluntário para continuar
+              </div>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step [stepControl]="jobForm">
+          <form [formGroup]="jobForm">
+            <ng-template matStepLabel>Função</ng-template>
+            <div class="step-content">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Selecione a função/posto</mat-label>
+                <mat-select formControlName="job" (selectionChange)="onJobSelected($event.value)">
+                  <mat-option *ngFor="let job of jobs" [value]="job.id">{{job.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div *ngIf="isLoadingJobs" class="alert-info">Carregando funções/postos...</div>
+              <div class="actions">
+                <button mat-raised-button color="primary" matStepperNext [disabled]="jobForm.invalid">Próximo</button>
+              </div>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step [stepControl]="shiftForm">
+          <form [formGroup]="shiftForm">
+            <ng-template matStepLabel>Horário</ng-template>
+            <div class="step-content">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Selecione o horário</mat-label>
+                <mat-select formControlName="shift" (selectionChange)="onShiftSelected($event.value)">
+                  <mat-option *ngFor="let shift of shifts" [value]="shift.id">{{shift.name}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div *ngIf="isLoadingShifts" class="alert-info">Carregando horários...</div>
+              <div class="actions">
+                <button mat-raised-button color="primary" matStepperNext [disabled]="shiftForm.invalid">Finalizar</button>
+              </div>
+            </div>
+          </form>
+        </mat-step>
+      </mat-horizontal-stepper>
+      <div *ngIf="isLoadingVolunteer" class="alert-info">Buscando voluntário...</div>
+      <div *ngIf="volunteerData" class="volunteer-result">
+        <b>Nome:</b> {{volunteerData.name}}<br>
+        <b>CPF:</b> {{volunteerData.cpf}}<br>
+        <b>Número no Sistema:</b> {{volunteerData.numeroSistema}}<br>
+        <b>Nome Colete:</b> {{volunteerData.nomeColete}}<br>
+        <b>Email:</b> {{volunteerData.email}}<br>
+        <b>Telefone:</b> {{volunteerData.phone}}<br>
+        <b>Comando Regional:</b> {{volunteerData.comandoRegional}}<br>
+        <b>Regional:</b> {{volunteerData.regional}}<br>
+        <b>Divisão:</b> {{volunteerData.divisao}}<br>
+        <b>Cargo:</b> {{volunteerData.cargo}}
+      </div>
+      <div *ngIf="volunteerError" class="alert-info">{{volunteerError}}</div>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -4,7 +4,7 @@ import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { EventsComponent } from './features/events/events.component';
 import { JobsComponent } from './features/jobs/jobs.component';
 import { PostsComponent } from './features/posts/posts.component';
-import { VolunteersComponent } from './features/volunteers/volunteers.component';
+import { VolunteerPageComponent } from './features/volunteer/volunteer-page/volunteer-page.component';
 import { authGuard } from './core/guards/auth.guard';
 import { VolunteerWizardComponent } from './features/volunteer/volunteer-wizard.component';
 
@@ -32,7 +32,7 @@ export const routes: Routes = [
   },
   {
     path: 'volunteers',
-    component: VolunteersComponent,
+    component: VolunteerPageComponent,
     canActivate: [authGuard]
   },
   {

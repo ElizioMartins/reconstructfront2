@@ -4,7 +4,7 @@ export interface Job {
     description?: string;
     eventId: string;
     maxVolunteers?: number;
-    status: 'ACTIVE' | 'INACTIVE';
-    createdAt: Date;
-    updatedAt: Date;
+    status?: 'ACTIVE' | 'INACTIVE';
+    createdAt?: Date;
+    updatedAt?: Date;
 }

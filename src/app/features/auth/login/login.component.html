@@ -1,0 +1,66 @@
+<div class="login-container">
+  <div class="left-panel">
+  </div>
+  <div class="right-panel">
+    <mat-card class="login-card">
+      <mat-card-content>
+        <div class="login-header">
+          <div class="logo-title-container">
+            <img src="assets/logo/logo-issi.svg" alt="Logo" class="logo" />
+            <div class="title-container">
+              <h1>Sistema de Gestão</h1>
+              <h2>de Staff</h2>
+            </div>
+          </div>
+          <h2 class="welcome-text">Seja bem vindo!</h2>
+        </div>
+
+        <div class="login-form">
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Usuário</mat-label>
+              <input matInput type="text" formControlName="username" placeholder="Digite o usuário">
+              <mat-error *ngIf="loginForm.get('username')?.errors?.['required'] && loginForm.get('username')?.touched">
+                Usuário é obrigatório
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Senha</mat-label>
+              <input matInput [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Digite a senha">
+              <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+                <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              <mat-error *ngIf="loginForm.get('password')?.errors?.['required'] && loginForm.get('password')?.touched">
+                Senha é obrigatória
+              </mat-error>
+            </mat-form-field>
+
+            <div class="form-options">
+              <mat-checkbox formControlName="remember">Lembrar-me</mat-checkbox>
+              <a href="#" class="forgot-password">Esqueci a senha</a>
+            </div>
+
+            <button mat-raised-button color="primary" type="submit" class="login-button" [disabled]="loginForm.invalid || isLoading">
+              Acessar
+              <span class="loading-spinner" *ngIf="isLoading"></span>
+            </button>
+            <div class="error-message" *ngIf="loginError">{{loginError}}</div>
+          </form>
+
+          <div class="support-contact">
+            <button mat-button class="support-button">Contato com o suporte</button>
+          </div>
+        </div>
+
+        <div class="login-footer">
+          <div class="footer-logos">
+            <img src="assets/logo/logo-operacional.svg" alt="Logo Operacional" />
+            <img src="assets/logo/logo-ti.svg" alt="Logo TI" />
+          </div>
+          <p>© Insanos M.C. Tecnologia e Instrução 2025</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
