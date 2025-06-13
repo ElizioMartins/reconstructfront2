@@ -1,79 +1,62 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { JobService } from '../../core/services/job.service';
+import { Job } from '../../core/models/job.model';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-jobs',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule, MatDialogModule],
-  template: `
-    <div class="cardform">
-      <div class="header">
-        <h1>Trabalhos</h1>
-        <button mat-raised-button color="primary" class="custom-button">
-          <mat-icon>add</mat-icon>
-          Novo Trabalho
-        </button>
-      </div>
-
-      <table mat-table [dataSource]="[]" class="mat-elevation-z8">
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef>Nome</th>
-          <td mat-cell *matCellDef="let element">{{element.name}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="description">
-          <th mat-header-cell *matHeaderCellDef>Descrição</th>
-          <td mat-cell *matCellDef="let element">{{element.description}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef>Status</th>
-          <td mat-cell *matCellDef="let element">{{element.status}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>Ações</th>
-          <td mat-cell *matCellDef="let element">
-            <button mat-icon-button color="primary">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button color="warn">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-    </div>
-  `,
-  styles: [`
-    .jobs-container {
-      padding: 24px;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-
-    table {
-      width: 100%;
-    }
-
-    .mat-column-actions {
-      width: 120px;
-      text-align: center;
-    }
-  `]
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatInputModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule
+  ],
+  templateUrl: './jobs.component.html',
+  styleUrls: ['./jobs.component.scss']
 })
 export class JobsComponent {
-  displayedColumns: string[] = ['name', 'description', 'status', 'actions'];
+  searchId: string = '';
+  jobs: Job[] = [];
+  isLoading: boolean = false;
+
+  constructor(
+    private readonly jobService: JobService,
+    private readonly snackBar: MatSnackBar
+  ) {}
+
+  searchJob() {
+    if (!this.searchId.trim()) {
+      this.snackBar.open('Por favor, digite um ID de trabalho', 'OK', { duration: 3000 });
+      return;
+    }
+
+    this.isLoading = true;
+    this.jobService.getJobsById(this.searchId).subscribe({
+      next: (job: Job) => {
+        this.jobs = [job];
+        this.isLoading = false;
+      },
+      error: (error: any) => {
+        console.error('Erro ao buscar trabalho:', error);
+        this.snackBar.open('Erro ao buscar trabalho. Verifique o ID e tente novamente.', 'OK', {
+          duration: 5000
+        });
+        this.isLoading = false;
+      }
+    });
+  }
 }
