@@ -80,11 +80,7 @@ export class VolunteerWizardComponent {
     this.eventService.getOngoingEvents().subscribe({
       next: (data: Event[]) => {
         console.log('Dados de eventos recebidos:', data);
-        this.events = data.map(event => ({
-          ...event,
-          startDate: new Date(event.startDate),
-          endDate: new Date(event.endDate)
-        }));
+        this.events = data;
         this.isLoadingEvents = false;
       },
       error: () => {
@@ -103,18 +99,21 @@ export class VolunteerWizardComponent {
   }
 
   processJobsFromEvent(event: Event) {
+    console.log('Evento recebido no processJobsFromEvent:', event);
     this.isLoadingJobs = true;
     let jobsFromEvent: Job[] = [];
 
-    if (event.celebrationJobLocationList && event.celebrationJobLocationList.length > 0) {
-      jobsFromEvent = event.celebrationJobLocationList.map((jobLocation: CelebrationJobLocation) => ({
-        id: jobLocation.uuid,
-        name: jobLocation.job.name,
-        description: jobLocation.job.description,
-        eventId: event.id,
-        location: 'Geral',
-        maxVolunteers: jobLocation.staffMax
-      }));
+    if (event.locationList && event.locationList.length > 0) {
+      jobsFromEvent = event.locationList.flatMap((location: LocationItem) =>
+        (location.celebrationJobLocationList || []).map((jobLocation: CelebrationJobLocation) => ({
+          id: jobLocation.uuid,
+          name: jobLocation.job.name,
+          description: jobLocation.job.description,
+          eventId: event.id,
+          location: location.name,
+          maxVolunteers: jobLocation.staffMax
+        }))
+      );
     }
 
     this.jobs = jobsFromEvent;
@@ -160,9 +159,6 @@ export class VolunteerWizardComponent {
 
   onJobSelected(job: Job) {
     this.selectedJob = job;
-    if (this.selectedJob) {
-      this.loadShifts(job.id);
-    }
   }
 
   onShiftSelected(shiftId: string) {
