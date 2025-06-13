@@ -40,7 +40,8 @@ import { HttpClientModule } from '@angular/common/http';
               (click)="drawer.toggle()">
               <mat-icon>menu</mat-icon>
             </button>
-            <span>IMC BPV</span>
+            <img src="/assets/images/escudo_28.png" class="me-4" style="height:37px; margin-right: 8px; margin-left: 8px;">
+            <span>INSANOS MC</span>
             <span class="spacer"></span>
             <button mat-icon-button (click)="logout()">
               <mat-icon>logout</mat-icon>
@@ -57,10 +58,10 @@ import { HttpClientModule } from '@angular/common/http';
         <router-outlet></router-outlet>
       </div>
     </ng-template>
-  `,
-  styles: [`
+  `,  styles: [`
     .sidenav-container {
       height: 100vh;
+      background: #f5f5f5;
     }
 
     .sidenav {
@@ -69,7 +70,9 @@ import { HttpClientModule } from '@angular/common/http';
     }
 
     .navbar {
-      background: #f5f5f5;
+      background: #b6b7bc url('/assets/images/fundo_comando.jpg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
     }
 
     .spacer {
@@ -80,14 +83,50 @@ import { HttpClientModule } from '@angular/common/http';
       position: sticky;
       top: 0;
       z-index: 1000;
-      background: white;
-      box-shadow: 0 2px 4px rgba(0,0,0,.1);
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+      color: white;
+      padding: 0 16px;
+      height: 70px;
+
+      button {
+        color: white;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        margin-right: 8px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.2);
+          transform: translateY(-2px);
+        }
+
+        mat-icon {
+          color: black;
+        }
+      }
+
+      span {
+        font-size: 1.2rem;
+        color: black;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+      }
     }
 
     .content {
-      padding: 20px;
-      background: #f5f5f5;
-      min-height: calc(100vh - 64px);
+      padding: 24px;
+      margin: 16px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      min-height: calc(100vh - 102px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
     }
   `]
 })

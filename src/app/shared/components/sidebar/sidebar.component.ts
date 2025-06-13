@@ -40,7 +40,7 @@ import { MatIconModule } from '@angular/material/icon';
       display: block;
       height: 100%;
       min-width: 280px;
-      background: url('/assets/images/fundo_comandoClaro.jpg') no-repeat center center fixed;
+      background: url('/assets/images/fundo_comando.jpg') no-repeat center center fixed;
       background-size: cover;
     }
 
@@ -56,7 +56,7 @@ import { MatIconModule } from '@angular/material/icon';
       transition: all 0.3s ease;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: green;
         transform: translateX(5px);
       }
     }
@@ -68,7 +68,7 @@ import { MatIconModule } from '@angular/material/icon';
 
     span[matListItemTitle] {
       font-size: 1rem;
-      //color: white;
+      color: white;
       letter-spacing: 0.5px;
     }
   `]
