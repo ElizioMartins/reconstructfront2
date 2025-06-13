@@ -448,13 +448,13 @@ https://sgs-api-stage.18mc.com.br/bpv/staffs
 esse serio o payload:
 
 celebrationJobLocationId
-: 
+:
 "1e189ea6-9e71-49c0-9589-720af90d272e"
 description
-: 
+:
 ""
 memberId
-: 
+:
 "736c600c-3d4b-4afd-bbb7-45826f724acf"
 
 aqui temos o resultado do cadastro do staff:
@@ -491,3 +491,31 @@ aqui temos o resultado do cadastro do staff:
     },
     "startAt": null
 }
+
+
+Para melhorar a segurança do armazenamento do token de autenticação, existem algumas alternativas melhores do que o localStorage. Vou sugerir a utilização de cookies httpOnly, que é uma abordagem mais segura. Aqui estão os motivos:
+
+1. Cookies httpOnly não podem ser acessados via JavaScript, o que protege contra ataques XSS
+2. Podem ser configurados com flags de segurança como Secure e SameSite
+3. São automaticamente enviados nas requisições HTTP
+4. Têm tempo de expiração configurável
+
+
+Agora que implementamos a solução usando cookies, aqui estão as principais melhorias de segurança que fizemos:
+
+1. Os tokens agora são armazenados em cookies com as seguintes configurações de segurança:
+   - `secure: true` - Garante que os cookies só sejam transmitidos via HTTPS
+   - `sameSite: 'strict'` - Previne ataques CSRF
+   - `expires: 1` - Define um tempo de expiração de 1 dia
+   - `path: '/'` - Restringe o acesso ao cookie ao domínio da aplicação
+
+2. Removemos o uso do `localStorage`, que é vulnerável a ataques XSS
+
+3. Centralizamos a lógica de gerenciamento de autenticação no `AuthService`
+
+4. Adicionamos métodos específicos para gerenciar o token e os dados do usuário
+
+Para usar esta nova implementação, não é necessário fazer nenhuma mudança adicional no código da aplicação, pois mantivemos a mesma interface do serviço. A única diferença é que agora os dados estão sendo armazenados de forma mais segura.
+
+Recomendo também configurar o backend para enviar os tokens JWT através de cookies HTTP-only na resposta, o que tornaria o sistema ainda mais seguro. Isso exigiria algumas modificações adicionais no backend da aplicação.
+

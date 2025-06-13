@@ -73,7 +73,7 @@ export class LoginComponent {
           if (res.user) {
             localStorage.setItem('user', JSON.stringify(res.user));
           }
-          this.router.navigate(['/volunteers']);
+          this.router.navigate(['/dashboard']);
         } else if (!this.loginError) {
           this.loginError = 'Usuário ou senha inválidos';
         }

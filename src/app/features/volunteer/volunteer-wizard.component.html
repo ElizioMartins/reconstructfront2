@@ -27,16 +27,45 @@
             <div class="step-content">
               <div class="event-details">
                 <strong>Evento Selecionado</strong><br>
-                <span><b>Nome:</b> {{selectedEvent?.name || '---'}}</span><br>                <span><b>Código:</b> {{selectedEvent?.shortKey || '---'}}</span><br>
+                <span><b>Nome:</b> {{selectedEvent?.name || '---'}}</span><br>
+                <span><b>Código:</b> {{selectedEvent?.shortKey || '---'}}</span><br>
                 <span><b>Período:</b> {{selectedEvent?.startAt | date:'dd/MM/yyyy, HH:mm'}} até {{selectedEvent?.endAt | date:'dd/MM/yyyy, HH:mm'}}</span>
               </div>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Digite o CPF do voluntário</mat-label>
-                <input matInput formControlName="cpf" placeholder="Digite o CPF do voluntário">
+                <input matInput
+                       formControlName="cpf"
+                       placeholder="Digite o CPF do voluntário"
+                       (keyup.enter)="buscarVoluntario()">
+                <button matSuffix
+                        mat-icon-button
+                        (click)="buscarVoluntario()"
+                        [disabled]="cpfForm.invalid"
+                        aria-label="Buscar voluntário">
+                  <mat-icon>search</mat-icon>
+                </button>
               </mat-form-field>
-              <div class="actions">
-                <button mat-raised-button color="primary" class="custom-button" (click)="buscarVoluntario()" [disabled]="cpfForm.invalid">Buscar</button>
+
+              <!-- Card do Voluntário -->
+              <div *ngIf="volunteerData && !volunteerError" class="volunteer-card" (click)="selectVolunteer()">
+                <h3>Dados do Voluntário</h3>
+                <div class="volunteer-info">
+                  <p><strong>Nome:</strong> {{volunteerData.name}}</p>
+                  <p><strong>CPF:</strong> {{volunteerData.cpf}}</p>
+                  <p><strong>Email:</strong> {{volunteerData.email}}</p>
+                  <p><strong>Número:</strong> {{volunteerData.numeroSistema}}</p>
+                  <p><strong>Nome Colete:</strong> {{volunteerData.nomeColete}}</p>
+                </div>
+                <div class="card-action">
+                  <mat-icon>check_circle</mat-icon>
+                  <span>Clique para selecionar</span>
+                </div>
               </div>
+
+              <div *ngIf="volunteerError" class="alert-error">
+                {{volunteerError}}
+              </div>
+
               <div *ngIf="!cpfForm.value.cpf" class="alert-info">
                 Digite o CPF do voluntário para continuar
               </div>
@@ -60,7 +89,7 @@
             </div>
           </form>
         </mat-step>
-        <mat-step [stepControl]="shiftForm">
+        <!-- <mat-step [stepControl]="shiftForm">
           <form [formGroup]="shiftForm">
             <ng-template matStepLabel>Horário</ng-template>
             <div class="step-content">
@@ -76,22 +105,73 @@
               </div>
             </div>
           </form>
+        </mat-step>  -->
+
+        <!-- Step de Confirmação -->
+        <mat-step>
+          <ng-template matStepLabel>Confirmação</ng-template>
+          <div class="step-content">
+            <div class="review-details">
+              <h2>Confirme os dados do cadastro:</h2>
+
+              <div class="review-section">
+                <h3>Evento</h3>
+                <p><strong>Nome:</strong> {{selectedEvent?.name}}</p>
+                <p><strong>Código:</strong> {{selectedEvent?.shortKey}}</p>
+                <p><strong>Período:</strong> {{selectedEvent?.startAt | date:'dd/MM/yyyy, HH:mm'}} até {{selectedEvent?.endAt | date:'dd/MM/yyyy, HH:mm'}}</p>
+              </div>
+
+              <div class="review-section">
+                <h3>Voluntário</h3>
+                <p><strong>Nome:</strong> {{volunteerData?.name}}</p>
+                <p><strong>CPF:</strong> {{volunteerData?.cpf}}</p>
+                <p><strong>Email:</strong> {{volunteerData?.email}}</p>
+              </div>
+
+              <div class="review-section">
+                <h3>Função e Horário</h3>
+                <p><strong>Função:</strong> {{selectedJob?.name}}</p>
+                <p><strong>Horário:</strong> {{selectedShift?.name}}</p>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button mat-raised-button matStepperPrevious>Voltar</button>
+              <button mat-raised-button color="primary" (click)="confirmarCadastro()">Confirmar e Cadastrar</button>
+            </div>
+          </div>
+        </mat-step>
+
+        <!-- Step de Resultado -->
+        <mat-step>
+          <ng-template matStepLabel>Finalizado</ng-template>
+          <div class="step-content">
+            <div class="success-message" *ngIf="staffCreated">
+              <mat-icon color="primary">check_circle</mat-icon>
+              <h2>Staff criado com sucesso!</h2>
+              <p>O voluntário foi registrado com sucesso no evento.</p>
+              <div class="actions">
+                <button mat-raised-button color="primary" (click)="onComplete()">
+                  Voltar para a Lista de Voluntários
+                </button>
+              </div>
+            </div>
+            <div class="error-message" *ngIf="!staffCreated">
+              <mat-icon color="warn">error</mat-icon>
+              <h2>Erro ao criar staff</h2>
+              <p>Houve um problema ao registrar o voluntário. Por favor, tente novamente.</p>
+              <div class="actions">
+                <button mat-raised-button color="warn" matStepperPrevious>
+                  Voltar
+                </button>
+                <button mat-raised-button color="primary" (click)="onComplete()">
+                  Cancelar e Voltar
+                </button>
+              </div>
+            </div>
+          </div>
         </mat-step>
       </mat-horizontal-stepper>
-      <div *ngIf="isLoadingVolunteer" class="alert-info">Buscando voluntário...</div>
-      <div *ngIf="volunteerData" class="volunteer-result">
-        <b>Nome:</b> {{volunteerData.name}}<br>
-        <b>CPF:</b> {{volunteerData.cpf}}<br>
-        <b>Número no Sistema:</b> {{volunteerData.numeroSistema}}<br>
-        <b>Nome Colete:</b> {{volunteerData.nomeColete}}<br>
-        <b>Email:</b> {{volunteerData.email}}<br>
-        <b>Telefone:</b> {{volunteerData.phone}}<br>
-        <b>Comando Regional:</b> {{volunteerData.comandoRegional}}<br>
-        <b>Regional:</b> {{volunteerData.regional}}<br>
-        <b>Divisão:</b> {{volunteerData.divisao}}<br>
-        <b>Cargo:</b> {{volunteerData.cargo}}
-      </div>
-      <div *ngIf="volunteerError" class="alert-info">{{volunteerError}}</div>
     </mat-card-content>
   </mat-card>
 </div>
