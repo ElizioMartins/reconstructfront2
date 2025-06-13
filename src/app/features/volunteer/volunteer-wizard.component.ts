@@ -12,9 +12,11 @@ import { VolunteerService } from '../../core/services/volunteer.service';
 import { EventService } from '../../core/services/event.service';
 import { JobService } from '../../core/services/job.service';
 import { ShiftService } from '../../core/services/shift.service';
-import { Event, LocationItem, CelebrationJobLocation } from '../../core/models/event.model';
 import { Job } from '../../core/models/job.model';
 import { Shift } from '../../core/models/shift.model';
+import { Event as EventModel } from '../../core/models/event.model';
+
+import { Volunteer } from '../../models/volunteer.model';
 
 @Component({
   selector: 'app-volunteer-wizard',
@@ -40,12 +42,13 @@ export class VolunteerWizardComponent {
   cpfForm: FormGroup;
   jobForm: FormGroup;
   shiftForm: FormGroup;
-  volunteerData: any = null;
+  volunteerData: Volunteer | null = null;
   volunteerError: string | null = null;
   isLoadingVolunteer = false;
-  events: Event[] = [];
+  events: EventModel[] = [];
+  validEvents: EventModel[] = [];
   jobs: Job[] = [];
-  selectedEvent: Event | null = null;
+  selectedEvent: EventModel | null = null;
   selectedJob: Job | null = null;
   isLoadingEvents = false;
   isLoadingJobs = false;
@@ -54,11 +57,11 @@ export class VolunteerWizardComponent {
   isLoadingShifts = false;
 
   constructor(
-    private fb: FormBuilder,
-    private volunteerService: VolunteerService,
-    private eventService: EventService,
-    private jobService: JobService,
-    private shiftService: ShiftService
+    private readonly fb: FormBuilder,
+    private readonly volunteerService: VolunteerService,
+    private readonly eventService: EventService,
+    private readonly jobService: JobService,
+    private readonly shiftService: ShiftService
   ) {
     this.eventForm = this.fb.group({
       event: [null, Validators.required]
@@ -78,94 +81,94 @@ export class VolunteerWizardComponent {
   loadEvents() {
     this.isLoadingEvents = true;
     this.eventService.getOngoingEvents().subscribe({
-      next: (data: Event[]) => {
+      next: (data: EventModel[]) => {
         console.log('Dados de eventos recebidos:', data);
         this.events = data;
+        this.validEvents = this.events.filter(event =>
+          event.startAt && event.endAt &&
+          new Date(event.endAt) >= new Date()
+        );
         this.isLoadingEvents = false;
       },
-      error: () => {
+      error: (error: Error) => {
+        console.error('Erro ao carregar eventos:', error);
         this.isLoadingEvents = false;
       }
     });
   }
 
-  onEventSelected(event: Event) {
-    console.log('Evento selecionado no onEventSelected:', event);
+  onEventSelected(event: EventModel) {
+    console.log('Evento selecionado:', event);
     this.selectedEvent = event;
-    this.eventForm.patchValue({ event: event });
-    if (this.selectedEvent) {
+    if (this.selectedEvent?.locationList) {
       this.processJobsFromEvent(this.selectedEvent);
     }
   }
 
-  processJobsFromEvent(event: Event) {
-    console.log('Evento recebido no processJobsFromEvent:', event);
-    this.isLoadingJobs = true;
-    let jobsFromEvent: Job[] = [];
+  processJobsFromEvent(event: EventModel) {
+    const jobsMap = new Map<string, Job>();
 
-    if (event.locationList && event.locationList.length > 0) {
-      jobsFromEvent = event.locationList.flatMap((location: LocationItem) =>
-        (location.celebrationJobLocationList || []).map((jobLocation: CelebrationJobLocation) => ({
-          id: jobLocation.uuid,
-          name: jobLocation.job.name,
-          description: jobLocation.job.description,
-          eventId: event.id,
-          location: location.name,
-          maxVolunteers: jobLocation.staffMax
-        }))
-      );
-    }
-
-    this.jobs = jobsFromEvent;
-    console.log('Dados de jobs processados do evento:', this.jobs);
-    this.isLoadingJobs = false;
-  }
-
-  buscarVoluntario() {
-    this.volunteerData = null;
-    this.volunteerError = null;
-    if (this.cpfForm.valid) {
-      this.isLoadingVolunteer = true;
-      this.volunteerService.getVolunteerByCpf(this.cpfForm.value.cpf).subscribe({
-        next: (data: any) => {
-          this.volunteerData = data;
-          console.log('Dados do voluntário recebidos:', this.volunteerData);
-          this.isLoadingVolunteer = false;
-          if (this.volunteerData) {
-            this.stepper.next();
-          }
-        },
-        error: (err: any) => {
-          console.error('Erro ao buscar voluntário:', err);
-          this.volunteerError = 'Voluntário não encontrado ou erro na busca.';
-          this.isLoadingVolunteer = false;
+    event.locationList?.forEach(location => {
+      location.celebrationJobLocationList?.forEach(cjl => {
+        if (cjl.job) {
+          jobsMap.set(cjl.job.uuid, cjl.job);
         }
       });
+    });
+
+    event.celebrationJobLocationList?.forEach(cjl => {
+      if (cjl.job) {
+        jobsMap.set(cjl.job.uuid, cjl.job);
+      }
+    });
+
+    this.jobs = Array.from(jobsMap.values());
+    console.log('Jobs processados:', this.jobs);
+  }
+
+  onJobSelected(jobId: string) {
+    this.selectedJob = this.jobs.find(j => j.uuid === jobId) || null;
+    if (this.selectedJob && this.selectedEvent) {
+      this.loadShiftsForJob(this.selectedEvent.uuid, jobId);
     }
   }
 
-  loadShifts(jobId: string) {
+  loadShiftsForJob(eventId: string, jobId: string) {
     this.isLoadingShifts = true;
-    this.shiftService.getShiftsByJob(jobId).subscribe({
-      next: (data) => {
-        this.shifts = data;
+    this.shiftService.getShifts(eventId, jobId).subscribe({
+      next: (shifts: Shift[]) => {
+        this.shifts = shifts;
         this.isLoadingShifts = false;
       },
-      error: () => {
+      error: (error: Error) => {
+        console.error('Erro ao carregar turnos:', error);
         this.isLoadingShifts = false;
       }
     });
-  }
-
-  onJobSelected(job: Job) {
-    this.selectedJob = job;
   }
 
   onShiftSelected(shiftId: string) {
     this.selectedShift = this.shifts.find(s => s.id === shiftId) || null;
   }
 
-  get validEvents() {
-    return (this.events);
+  buscarVoluntario() {
+    if (this.cpfForm.valid) {
+      this.isLoadingVolunteer = true;
+      this.volunteerError = null;
+      this.volunteerService.getVolunteerByCpf(this.cpfForm.value.cpf).subscribe({
+        next: (data: Volunteer) => {
+          this.volunteerData = data;
+          this.isLoadingVolunteer = false;
+          if (this.stepper) {
+            this.stepper.next();
+          }
+        },
+        error: (error: Error) => {
+          console.error('Erro ao buscar voluntário:', error);
+          this.volunteerError = 'Erro ao buscar voluntário. Por favor, verifique o CPF e tente novamente.';
+          this.isLoadingVolunteer = false;
+        }
+      });
+    }
   }
 }

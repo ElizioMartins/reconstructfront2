@@ -1,13 +1,8 @@
 export interface Job {
-    id: string;
-    uuid?: string;
+    uuid: string;
+    createdAt: string;
     name: string;
-    description?: string;
-    eventId?: string;
-    maxVolunteers?: number;
-    status?: 'ACTIVE' | 'INACTIVE';
-    createdAt?: Date;
-    updatedAt?: Date;
-    shortKey?: string;
-    printTicketJob?: string;
+    description: string;
+    shortKey: string;
+    printTicketJob: string;
 }

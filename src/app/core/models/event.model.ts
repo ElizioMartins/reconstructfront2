@@ -1,16 +1,23 @@
-export interface JobDetails {
+interface GeoLocation {
+  x: number;
+  y: number;
+}
+
+interface Job {
   uuid: string;
   createdAt: string;
   name: string;
   description: string;
   shortKey: string;
-  printTicketJob: any | null;
+  printTicketJob: string;
 }
 
-export interface CelebrationJobLocation {
+interface CelebrationJobLocation {
   uuid: string;
   createdAt: string;
-  job: JobDetails;
+  celebration: string;
+  location: string;
+  job: Job;
   staffMin: number;
   staffMax: number;
   staffMid: number;
@@ -18,31 +25,27 @@ export interface CelebrationJobLocation {
   defaultJobTimeInMinutes: number;
 }
 
-export interface LocationItem {
+interface Location {
   uuid: string;
   createdAt: string;
   name: string;
   description: string;
   shortKey: string;
-  celebrationJobLocationList?: CelebrationJobLocation[];
-  geoLocation: any | null;
+  celebrationLocation: string;
+  celebrationJobLocationList: CelebrationJobLocation[];
+  geoLocation: GeoLocation;
   printTicketLocation: string;
 }
 
 export interface Event {
-    id: string; // Mapeado de 'uuid' da API
-    name: string;
-    code: string; // Mapeado de 'shortKey' da API
-    startDate: Date; // Mapeado de 'startAt' da API
-    endDate: Date; // Mapeado de 'endAt' da API
-    status?: 'DRAFT' | 'PUBLISHED' | 'CANCELLED' | 'FINISHED';
-    description?: string;
-    location?: string;
-    maxVolunteers?: number;
-    observation?: string;
-    locationList?: LocationItem[];
-    celebrationJobLocationList?: CelebrationJobLocation[];
-    printTicketCelebration?: string;
-    createdAt: Date;
-    updatedAt: Date;
+  uuid: string;
+  createdAt: string;
+  name: string;
+  observation: string;
+  shortKey: string;
+  startAt: string;
+  endAt: string;
+  locationList: Location[];
+  celebrationJobLocationList: CelebrationJobLocation[];
+  printTicketCelebration: string;
 }

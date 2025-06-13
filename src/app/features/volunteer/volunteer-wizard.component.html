@@ -27,9 +27,8 @@
             <div class="step-content">
               <div class="event-details">
                 <strong>Evento Selecionado</strong><br>
-                <span><b>Nome:</b> {{selectedEvent?.name || '---'}}</span><br>
-                <span><b>Código:</b> {{selectedEvent?.code || '---'}}</span><br>
-                <span><b>Período:</b> {{selectedEvent?.startDate | date:'dd/MM/yyyy, HH:mm'}} até {{selectedEvent?.endDate | date:'dd/MM/yyyy, HH:mm'}}</span>
+                <span><b>Nome:</b> {{selectedEvent?.name || '---'}}</span><br>                <span><b>Código:</b> {{selectedEvent?.shortKey || '---'}}</span><br>
+                <span><b>Período:</b> {{selectedEvent?.startAt | date:'dd/MM/yyyy, HH:mm'}} até {{selectedEvent?.endAt | date:'dd/MM/yyyy, HH:mm'}}</span>
               </div>
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Digite o CPF do voluntário</mat-label>
@@ -51,7 +50,7 @@
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Selecione a função/posto</mat-label>
                 <mat-select formControlName="job" (selectionChange)="onJobSelected($event.value)">
-                  <mat-option *ngFor="let job of jobs" [value]="job.id">{{job.name}}</mat-option>
+                  <mat-option *ngFor="let job of jobs" [value]="job.uuid">{{job.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
               <div *ngIf="isLoadingJobs" class="alert-info">Carregando funções/postos...</div>
