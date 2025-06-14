@@ -1,0 +1,87 @@
+body {
+  //background: #b6b7bc url('assets/images/fundo_comando.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-size: .80em;
+  font-family: "Helvetica Neue", "Lucida Grande", "Segoe UI", Arial, Helvetica, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #696969;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.cardform {
+  background: #b6b7bc url('/assets/images/fundo_comandoClaro.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: "Helvetica Neue", "Lucida Grande", "Segoe UI", Arial, Helvetica, Verdana, sans-serif;
+  margin: 0;
+  padding: 0.5rem;
+  border-radius: 8px;
+  color: #000000;
+ }
+
+
+
+// Estilos de botões personalizados
+.custom-button {
+  &.mat-mdc-raised-button,
+  &.mat-mdc-button,
+  &.mat-mdc-icon-button,
+  &button {
+    background-color: #00ff00 !important;
+    border: none !important;
+    padding: 0.5rem 1rem !important;
+    color: #000 !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+
+    &.mat-primary {
+      background-color: #00ff00 !important;
+      color: #000 !important;
+    }
+
+    &.mat-warn {
+      background-color: #ff4444 !important;
+      color: #fff !important;
+    }
+
+    &:disabled {
+      background-color: #cccccc !important;
+      color: #666666 !important;
+      cursor: not-allowed !important;
+    }
+
+    &:hover:not(:disabled) {
+      filter: brightness(1.1);
+    }
+  }
+}
+
+input, select {
+  background: #222;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 0.5rem;
+  margin: 0.3rem 0;
+}
+
+
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+label {
+  color: #fff;
+}
+
+.text-muted {
+  color: #bbb7b7;
+}
+
+
+

@@ -1,0 +1,48 @@
+<div class="cardform">
+  <div class="header">
+    <h1>Trabalhos</h1>
+    <div class="search-container">
+      <mat-form-field appearance="outline">
+        <mat-label>Buscar trabalho por ID</mat-label>
+        <input matInput [(ngModel)]="searchId" placeholder="Digite o ID do trabalho">
+        <button mat-icon-button matSuffix (click)="searchJob()" [disabled]="isLoading">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="jobs-container" *ngIf="!isLoading">
+    <mat-card class="job-card" *ngFor="let job of jobs">
+      <mat-card-header>
+        <mat-card-title>{{job.name}}</mat-card-title>
+        <mat-card-subtitle>ID: {{job.uuid}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Descrição:</strong> {{job.description}}</p>
+        <p><strong>Chave:</strong> {{job.shortKey}}</p>
+        <p><strong>Criado em:</strong> {{job.createdAt | date:'dd/MM/yyyy HH:mm'}}</p>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-button color="primary">
+          <mat-icon>edit</mat-icon>
+          EDITAR
+        </button>
+        <button mat-button color="warn">
+          <mat-icon>delete</mat-icon>
+          EXCLUIR
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <div class="no-jobs" *ngIf="jobs.length === 0">
+      <mat-icon>work_off</mat-icon>
+      <p>Nenhum trabalho encontrado. Use a busca acima para encontrar trabalhos.</p>
+    </div>
+  </div>
+
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Buscando trabalho...</p>
+  </div>
+</div>
