@@ -92,7 +92,7 @@
               <button mat-menu-item
                       *ngFor="let acao of ACOES"
                       [disabled]="!isAcaoPermitida(acao, membro)"
-                      (click)="registrarAcao(membro, acao)">
+                      (click)="abrirConfirmacao(membro, acao)">
                 <mat-icon>{{ acao.icone }}</mat-icon>
                 <span>{{ acao.label }}</span>
               </button>

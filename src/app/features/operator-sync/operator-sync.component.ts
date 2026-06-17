@@ -12,36 +12,29 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { OfflineSyncService } from '../../core/services/offline-sync.service';
+import {
+  Alocacao,
+  AcaoOperador,
+  RegistroFila,
+  EventTypeEnum,
+  ConfirmacaoAcaoDialogData,
+  ConfirmacaoAcaoDialogResult,
+} from '../../core/models/alocacao.model';
+import { ConfirmacaoAcaoDialogComponent } from './confirmacao-acao-dialog.component';
 
-interface Acao {
-  label: string;
-  eventTypeEnum: string;
-  icone: string;
-  allowedFrom: string[];
-}
-
-interface RegistroFila {
-  memberId: string;
-  celebrationJobLocationId: string;
-  localNome: string;
-  membroNome: string;
-  acao: string;
-  eventTypeEnum: string;
-  dataHora: string;
-}
-
-const ACOES: Acao[] = [
-  { label: 'Iniciar',       eventTypeEnum: 'start',        icone: 'play_arrow',   allowedFrom: ['scheduler'] },
-  { label: 'Concluído',     eventTypeEnum: 'end_success',  icone: 'check_circle', allowedFrom: ['start'] },
-  { label: 'Deserção',      eventTypeEnum: 'end_failure',  icone: 'person_off',   allowedFrom: ['start'] },
-  { label: 'Ocorrência',    eventTypeEnum: 'notification', icone: 'report',       allowedFrom: ['start'] },
-  { label: 'Disciplina',    eventTypeEnum: 'notification', icone: 'gavel',        allowedFrom: ['start'] },
-  { label: 'Troca Função',  eventTypeEnum: 'change_job',   icone: 'swap_horiz',   allowedFrom: ['scheduler', 'start'] },
+const ACOES: AcaoOperador[] = [
+  { label: 'Iniciar',      eventTypeEnum: 'start',        icone: 'play_arrow',   allowedFrom: ['scheduler'],           observacaoObrigatoria: false },
+  { label: 'Concluído',    eventTypeEnum: 'end_success',  icone: 'check_circle', allowedFrom: ['start'],               observacaoObrigatoria: false },
+  { label: 'Deserção',     eventTypeEnum: 'end_failure',  icone: 'person_off',   allowedFrom: ['start'],               observacaoObrigatoria: true  },
+  { label: 'Ocorrência',   eventTypeEnum: 'notification', icone: 'report',       allowedFrom: ['start'],               observacaoObrigatoria: true  },
+  { label: 'Disciplina',   eventTypeEnum: 'notification', icone: 'gavel',        allowedFrom: ['start'],               observacaoObrigatoria: true  },
+  { label: 'Troca Função', eventTypeEnum: 'change_job',   icone: 'swap_horiz',   allowedFrom: ['scheduler', 'start'],  observacaoObrigatoria: false },
 ];
 
-// Ações que registram ocorrência sem mudar o status do membro
-const ACOES_SEM_MUDANCA_STATUS = new Set(['notification']);
+// Ações que registram sem alterar o status do membro
+const ACOES_SEM_MUDANCA_STATUS = new Set<EventTypeEnum>(['notification']);
 
 @Component({
   selector: 'app-operator-sync',
@@ -60,6 +53,7 @@ const ACOES_SEM_MUDANCA_STATUS = new Set(['notification']);
     MatChipsModule,
     MatTooltipModule,
     MatDividerModule,
+    MatDialogModule,
   ],
   templateUrl: './operator-sync.component.html',
   styleUrls: ['./operator-sync.component.scss']
@@ -68,9 +62,9 @@ export class OperatorSyncComponent implements OnInit {
 
   readonly ACOES = ACOES;
 
-  alocacoesTrabalho: any[] = [];
+  alocacoesTrabalho: Alocacao[] = [];
   locaisUnicos: string[] = [];
-  localSelecionado: string = '';
+  localSelecionado = '';
   filaOffline: RegistroFila[] = [];
   isLoading = false;
   isSyncing = false;
@@ -78,7 +72,8 @@ export class OperatorSyncComponent implements OnInit {
 
   constructor(
     private readonly offlineSyncService: OfflineSyncService,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar,
+    private readonly dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -89,26 +84,25 @@ export class OperatorSyncComponent implements OnInit {
     return navigator.onLine && !this.simulandoOffline;
   }
 
-  get membrosFiltrados(): any[] {
+  get membrosFiltrados(): Alocacao[] {
     if (!this.localSelecionado) return [];
     return this.alocacoesTrabalho.filter(a => a.localNome === this.localSelecionado);
   }
 
   carregarAlocacoes(): void {
     if (!this.isOnline) {
-      if (this.alocacoesTrabalho.length > 0) {
-        this.snackBar.open('Sem conexão. Usando dados já carregados para trabalho em campo.', 'OK', { duration: 4000 });
-      } else {
-        this.snackBar.open('Sem conexão. Não foi possível carregar as alocações.', 'OK', { duration: 4000 });
-      }
+      const msg = this.alocacoesTrabalho.length > 0
+        ? 'Sem conexão. Usando dados já carregados para trabalho em campo.'
+        : 'Sem conexão. Não foi possível carregar as alocações.';
+      this.snackBar.open(msg, 'OK', { duration: 4000 });
       return;
     }
 
     this.isLoading = true;
     this.offlineSyncService.getAlocacoesMock().subscribe({
-      next: (dados) => {
+      next: (dados: Alocacao[]) => {
         this.alocacoesTrabalho = dados.map(d => ({ ...d }));
-        this.locaisUnicos = [...new Set<string>(dados.map((d: any) => d.localNome))];
+        this.locaisUnicos = [...new Set(dados.map(d => d.localNome))];
         if (!this.localSelecionado && this.locaisUnicos.length > 0) {
           this.localSelecionado = this.locaisUnicos[0];
         }
@@ -122,11 +116,28 @@ export class OperatorSyncComponent implements OnInit {
     });
   }
 
-  isAcaoPermitida(acao: Acao, membro: any): boolean {
+  isAcaoPermitida(acao: AcaoOperador, membro: Alocacao): boolean {
     return acao.allowedFrom.includes(membro.statusAtualEnum);
   }
 
-  registrarAcao(membro: any, acao: Acao): void {
+  abrirConfirmacao(membro: Alocacao, acao: AcaoOperador): void {
+    const ref = this.dialog.open<
+      ConfirmacaoAcaoDialogComponent,
+      ConfirmacaoAcaoDialogData,
+      ConfirmacaoAcaoDialogResult
+    >(ConfirmacaoAcaoDialogComponent, {
+      data: { membro, acao },
+      width: '420px',
+      disableClose: true,
+    });
+
+    ref.afterClosed().subscribe((resultado) => {
+      if (!resultado) return; // usuário cancelou
+      this.registrarAcao(membro, acao, resultado.observacao);
+    });
+  }
+
+  registrarAcao(membro: Alocacao, acao: AcaoOperador, observacao: string): void {
     const registro: RegistroFila = {
       memberId: membro.memberId,
       celebrationJobLocationId: membro.celebrationJobLocationId,
@@ -134,7 +145,8 @@ export class OperatorSyncComponent implements OnInit {
       membroNome: membro.membroNome,
       acao: acao.label,
       eventTypeEnum: acao.eventTypeEnum,
-      dataHora: new Date().toISOString()
+      observacao,
+      dataHora: new Date().toISOString(),
     };
 
     if (!ACOES_SEM_MUDANCA_STATUS.has(acao.eventTypeEnum)) {
@@ -143,11 +155,10 @@ export class OperatorSyncComponent implements OnInit {
 
     this.filaOffline.push(registro);
 
-    if (!this.isOnline) {
-      this.snackBar.open(`"${acao.label}" salvo na fila offline.`, 'OK', { duration: 3000 });
-    } else {
-      this.snackBar.open(`"${acao.label}" registrado. Aguardando sincronização.`, '', { duration: 2000 });
-    }
+    const msgOffline = this.isOnline
+      ? `"${acao.label}" registrado. Aguardando sincronização.`
+      : `"${acao.label}" salvo na fila offline.`;
+    this.snackBar.open(msgOffline, '', { duration: 2500 });
   }
 
   sincronizar(): void {
@@ -155,7 +166,6 @@ export class OperatorSyncComponent implements OnInit {
       this.snackBar.open('Sem conexão. Conecte-se à internet para sincronizar.', 'OK', { duration: 4000 });
       return;
     }
-
     if (this.filaOffline.length === 0) {
       this.snackBar.open('Nenhum registro pendente na fila.', '', { duration: 2000 });
       return;
@@ -163,7 +173,7 @@ export class OperatorSyncComponent implements OnInit {
 
     this.isSyncing = true;
     this.offlineSyncService.syncOcorrenciasMock(this.filaOffline).subscribe({
-      next: (res) => {
+      next: (res: { success: boolean; message: string }) => {
         this.filaOffline = [];
         this.isSyncing = false;
         this.snackBar.open(res.message || 'Sincronização concluída!', 'OK', { duration: 3000 });
@@ -178,21 +188,9 @@ export class OperatorSyncComponent implements OnInit {
   toggleSimularOffline(): void {
     this.simulandoOffline = !this.simulandoOffline;
     const msg = this.simulandoOffline
-      ? 'Modo offline ATIVADO (simulação). Registros irão para a fila.'
+      ? 'Modo offline ATIVADO (simulação).'
       : 'Modo offline DESATIVADO. Conexão restaurada.';
     this.snackBar.open(msg, 'OK', { duration: 3000 });
-  }
-
-  getStatusLabel(statusEnum: string): string {
-    const map: Record<string, string> = {
-      scheduler:   'Agendado',
-      start:       'Em Turno',
-      end_success: 'Concluído',
-      end_failure: 'Deserção',
-      change_job:  'Troca de Função',
-      notification: 'Em Turno',
-    };
-    return map[statusEnum] ?? statusEnum;
   }
 
   getWhatsappUrl(telefone: string): string {
@@ -200,13 +198,25 @@ export class OperatorSyncComponent implements OnInit {
     return `https://wa.me/55${digits}`;
   }
 
-  getStatusClass(statusEnum: string): string {
-    const map: Record<string, string> = {
-      scheduler:   'status-agendado',
-      start:       'status-em-turno',
-      end_success: 'status-concluido',
-      end_failure: 'status-desercao',
-      change_job:  'status-troca',
+  getStatusLabel(statusEnum: EventTypeEnum): string {
+    const map: Record<EventTypeEnum, string> = {
+      scheduler:    'Agendado',
+      start:        'Em Turno',
+      end_success:  'Concluído',
+      end_failure:  'Deserção',
+      change_job:   'Troca de Função',
+      notification: 'Em Turno',
+    };
+    return map[statusEnum] ?? statusEnum;
+  }
+
+  getStatusClass(statusEnum: EventTypeEnum): string {
+    const map: Record<EventTypeEnum, string> = {
+      scheduler:    'status-agendado',
+      start:        'status-em-turno',
+      end_success:  'status-concluido',
+      end_failure:  'status-desercao',
+      change_job:   'status-troca',
       notification: 'status-em-turno',
     };
     return map[statusEnum] ?? '';
