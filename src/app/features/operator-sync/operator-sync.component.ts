@@ -195,6 +195,11 @@ export class OperatorSyncComponent implements OnInit {
     return map[statusEnum] ?? statusEnum;
   }
 
+  getWhatsappUrl(telefone: string): string {
+    const digits = telefone.replace(/\D/g, '');
+    return `https://wa.me/55${digits}`;
+  }
+
   getStatusClass(statusEnum: string): string {
     const map: Record<string, string> = {
       scheduler:   'status-agendado',

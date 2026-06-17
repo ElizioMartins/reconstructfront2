@@ -60,12 +60,23 @@
       <mat-card class="membro-card" *ngFor="let membro of membrosFiltrados">
         <div class="membro-row">
           <div class="membro-info">
-            <div class="colete">{{ membro.membroNomeColete }}</div>
+            <div class="colete-pill">{{ membro.membroNomeColete }}</div>
             <div class="membro-dados">
               <span class="membro-nome">{{ membro.membroNome }}</span>
-              <span class="status-badge" [ngClass]="getStatusClass(membro.statusAtualEnum)">
-                {{ getStatusLabel(membro.statusAtualEnum) }}
-              </span>
+              <div class="membro-meta">
+                <span class="status-badge" [ngClass]="getStatusClass(membro.statusAtualEnum)">
+                  {{ getStatusLabel(membro.statusAtualEnum) }}
+                </span>
+                <a *ngIf="membro.telefoneCelular"
+                   class="whatsapp-link"
+                   [href]="getWhatsappUrl(membro.telefoneCelular)"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   matTooltip="Abrir WhatsApp">
+                  <mat-icon class="whatsapp-icon">whatsapp</mat-icon>
+                  {{ membro.telefoneCelular }}
+                </a>
+              </div>
             </div>
           </div>
 

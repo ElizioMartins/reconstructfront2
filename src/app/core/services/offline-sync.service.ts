@@ -12,6 +12,7 @@ export class OfflineSyncService {
 
   // Simula o GET da API (com 1 segundo de atraso para parecer real)
   getAlocacoesMock(): Observable<any[]> {
+    console.log('🚀 Recebido da API (Mock):', MOCK_ALOCACOES);
     return of(MOCK_ALOCACOES).pipe(delay(1000));
   }
 
