@@ -1,0 +1,132 @@
+<div class="cardform">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-title">
+      <mat-icon>sync_alt</mat-icon>
+      <h1>Controle de Ocorrências</h1>
+    </div>
+    <div class="header-actions">
+      <button mat-stroked-button
+              color="warn"
+              [class.active-offline]="simulandoOffline"
+              (click)="toggleSimularOffline()"
+              matTooltip="Simula ausência de internet para testes">
+        <mat-icon>{{ simulandoOffline ? 'wifi_off' : 'wifi' }}</mat-icon>
+        {{ simulandoOffline ? 'Offline (Simulado)' : 'Simular Offline' }}
+      </button>
+
+      <button mat-stroked-button color="primary" (click)="carregarAlocacoes()" [disabled]="isLoading">
+        <mat-icon>refresh</mat-icon>
+        Atualizar Lista
+      </button>
+    </div>
+  </div>
+
+  <!-- STATUS DE CONEXÃO -->
+  <div class="status-conexao" [class.online]="isOnline" [class.offline]="!isOnline">
+    <mat-icon>{{ isOnline ? 'cloud_done' : 'cloud_off' }}</mat-icon>
+    <span>{{ isOnline ? 'Online — sincronização disponível' : 'Offline — registros salvos localmente' }}</span>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading-container" *ngIf="isLoading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Carregando alocações...</p>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+
+    <!-- FILTRO DE LOCAL -->
+    <div class="filtro-container">
+      <mat-form-field appearance="outline" class="filtro-select">
+        <mat-label>Local de Trabalho</mat-label>
+        <mat-select [(ngModel)]="localSelecionado">
+          <mat-option *ngFor="let local of locaisUnicos" [value]="local">
+            {{ local }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matPrefix>location_on</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <!-- LISTA DE MEMBROS -->
+    <div class="membros-lista" *ngIf="localSelecionado; else semLocal">
+
+      <div class="membros-header">
+        <span>{{ membrosFiltrados.length }} integrante(s) neste local</span>
+      </div>
+
+      <mat-card class="membro-card" *ngFor="let membro of membrosFiltrados">
+        <div class="membro-row">
+          <div class="membro-info">
+            <div class="colete">{{ membro.membroNomeColete }}</div>
+            <div class="membro-dados">
+              <span class="membro-nome">{{ membro.membroNome }}</span>
+              <span class="status-badge" [ngClass]="getStatusClass(membro.statusAtualEnum)">
+                {{ getStatusLabel(membro.statusAtualEnum) }}
+              </span>
+            </div>
+          </div>
+
+          <div class="membro-acoes">
+            <button mat-icon-button
+                    [matMenuTriggerFor]="menuAcoes"
+                    matTooltip="Registrar ação"
+                    color="primary">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+
+            <mat-menu #menuAcoes="matMenu">
+              <button mat-menu-item
+                      *ngFor="let acao of ACOES"
+                      [disabled]="!isAcaoPermitida(acao, membro)"
+                      (click)="registrarAcao(membro, acao)">
+                <mat-icon>{{ acao.icone }}</mat-icon>
+                <span>{{ acao.label }}</span>
+              </button>
+            </mat-menu>
+          </div>
+        </div>
+      </mat-card>
+
+      <div class="sem-membros" *ngIf="membrosFiltrados.length === 0">
+        <mat-icon>group_off</mat-icon>
+        <p>Nenhum integrante alocado neste local.</p>
+      </div>
+    </div>
+
+    <ng-template #semLocal>
+      <div class="sem-membros">
+        <mat-icon>location_off</mat-icon>
+        <p>Selecione um local de trabalho para ver os integrantes.</p>
+      </div>
+    </ng-template>
+
+  </ng-container>
+
+  <!-- RODAPÉ — FILA OFFLINE -->
+  <div class="rodape-fila">
+    <mat-divider></mat-divider>
+    <div class="rodape-conteudo">
+      <div class="fila-info">
+        <mat-icon [class.fila-vazia]="filaOffline.length === 0" [class.fila-pendente]="filaOffline.length > 0">
+          {{ filaOffline.length > 0 ? 'pending_actions' : 'check_circle' }}
+        </mat-icon>
+        <span>
+          <strong>{{ filaOffline.length }}</strong>
+          {{ filaOffline.length === 1 ? 'registro pendente' : 'registros pendentes' }} na fila
+        </span>
+      </div>
+
+      <button mat-flat-button
+              color="accent"
+              (click)="sincronizar()"
+              [disabled]="isSyncing || filaOffline.length === 0">
+        <mat-icon>{{ isSyncing ? 'hourglass_top' : 'cloud_upload' }}</mat-icon>
+        {{ isSyncing ? 'Sincronizando...' : 'Sincronizar' }}
+      </button>
+    </div>
+  </div>
+
+</div>

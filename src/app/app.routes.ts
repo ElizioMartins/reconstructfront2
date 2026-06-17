@@ -7,6 +7,7 @@ import { PostsComponent } from './features/posts/posts.component';
 import { VolunteerPageComponent } from './features/volunteer/volunteer-page/volunteer-page.component';
 import { authGuard } from './core/guards/auth.guard';
 import { VolunteerWizardComponent } from './features/volunteer/volunteer-wizard.component';
+import { OperatorSyncComponent } from './features/operator-sync/operator-sync.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -38,6 +39,11 @@ export const routes: Routes = [
   {
     path: 'voluntariado',
     component: VolunteerWizardComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'operator-sync',
+    component: OperatorSyncComponent,
     canActivate: [authGuard]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' }

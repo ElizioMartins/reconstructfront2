@@ -34,6 +34,10 @@ import { MatIconModule } from '@angular/material/icon';
         <mat-icon matListItemIcon>group</mat-icon>
         <span matListItemTitle>Voluntariado</span>
       </a>
+      <a mat-list-item routerLink="/operator-sync">
+        <mat-icon matListItemIcon>sync_alt</mat-icon>
+        <span matListItemTitle>Controle de Ocorrências</span>
+      </a>
     </mat-nav-list>
   `,  styles: [`
     :host {

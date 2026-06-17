@@ -1,0 +1,277 @@
+.cardform {
+  padding: 24px;
+  padding-bottom: 96px; // espaço para o rodapé fixo
+}
+
+// ── HEADER ──────────────────────────────────────────────────────────────────
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  .header-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    mat-icon {
+      font-size: 28px;
+      height: 28px;
+      width: 28px;
+      color: #1976d2;
+    }
+
+    h1 {
+      margin: 0;
+      color: #333;
+      font-size: 24px;
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    .active-offline {
+      background-color: #fdecea;
+      border-color: #c62828;
+      color: #c62828;
+    }
+  }
+}
+
+// ── STATUS DE CONEXÃO ────────────────────────────────────────────────────────
+
+.status-conexao {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+
+  &.online {
+    background: #e8f5e9;
+    color: #2e7d32;
+    mat-icon { color: #2e7d32; }
+  }
+
+  &.offline {
+    background: #fdecea;
+    color: #c62828;
+    mat-icon { color: #c62828; }
+  }
+}
+
+// ── FILTRO ───────────────────────────────────────────────────────────────────
+
+.filtro-container {
+  margin-bottom: 20px;
+
+  .filtro-select {
+    width: 100%;
+    max-width: 420px;
+  }
+}
+
+// ── LISTA DE MEMBROS ─────────────────────────────────────────────────────────
+
+.membros-header {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 12px;
+  padding-left: 4px;
+}
+
+.membros-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.membro-card {
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+  transition: box-shadow 0.2s ease;
+  padding: 0 !important;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+  }
+}
+
+.membro-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.membro-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+}
+
+.colete {
+  min-width: 48px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #1976d2;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.membro-dados {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.membro-nome {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.membro-acoes {
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+// ── STATUS BADGES ────────────────────────────────────────────────────────────
+
+.status-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.status-agendado {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.status-em-turno {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-concluido {
+  background: #ede7f6;
+  color: #4527a0;
+}
+
+.status-desercao {
+  background: #fdecea;
+  color: #c62828;
+}
+
+.status-troca {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+// ── ESTADOS VAZIOS ───────────────────────────────────────────────────────────
+
+.sem-membros {
+  text-align: center;
+  padding: 48px 0;
+  color: #999;
+
+  mat-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    margin-bottom: 12px;
+    display: block;
+    margin-inline: auto;
+  }
+
+  p {
+    margin: 0;
+    font-size: 1rem;
+  }
+}
+
+// ── LOADING ──────────────────────────────────────────────────────────────────
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 0;
+  gap: 16px;
+
+  p {
+    color: #666;
+    margin: 0;
+  }
+}
+
+// ── RODAPÉ FIXO ──────────────────────────────────────────────────────────────
+
+.rodape-fila {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+
+  mat-divider {
+    margin: 0;
+  }
+
+  .rodape-conteudo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 24px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .fila-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #444;
+
+    .fila-vazia {
+      color: #2e7d32;
+    }
+
+    .fila-pendente {
+      color: #e65100;
+    }
+  }
+}
