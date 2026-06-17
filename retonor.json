@@ -1,0 +1,47 @@
+GET
+/bpv/celebrationJobLocations/{id
+}
+Buscar celebrationJobLocation por ID
+
+
+Parameters
+Cancel
+Name	Description
+id *
+string($uuid)
+(path)
+1e189ea6-9e71-49c0-9589-720af90d272e
+Execute
+Clear
+Responses
+Curl
+
+curl -X 'GET' \
+  'https: //sgs-api-stage.18mc.com.br/bpv/celebrationJobLocations/1e189ea6-9e71-49c0-9589-720af90d272e' \
+  -H 'accept: */*' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc4MTcxMDg3NSwiZXhwIjoxNzgxNzE0NDc1fQ.kHIBo2UxWIgr71-_VLSxxG663E9qV0-Pleuz-8lOTF8'
+Request URL
+https://sgs-api-stage.18mc.com.br/bpv/celebrationJobLocations/1e189ea6-9e71-49c0-9589-720af90d272e
+Server response
+Code	Details
+200	
+Response body
+Download
+{
+  "uuid": "1e189ea6-9e71-49c0-9589-720af90d272e",
+  "createdAt": "2025-06-30T03:00:00.000+00:00",
+  "job": {
+    "uuid": "c50eea0d-0bec-48f6-8c9e-c707bf599ec8",
+    "createdAt": "2025-06-13T03:05:01.368+00:00",
+    "name": "CMD XI",
+    "description": "Contin - Integrantes do Comando XI",
+    "shortKey": "XI",
+    "printTicketJob": "XI"
+  },
+  "staffMin": 10,
+  "staffMax": 30,
+  "staffMid": 20,
+  "priority": 5,
+  "defaultJobTimeInMinutes": 240,
+  "staffList": []
+}

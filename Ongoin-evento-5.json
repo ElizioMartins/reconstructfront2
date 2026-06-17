@@ -1,0 +1,179 @@
+{
+    "uuid": "cd22fd41-1fce-4fde-984d-9414b67f5472",
+    "name": "Bonde Pela Vida 5ª Edição",
+    "observation": "Não esqueça de ao termino do seu turno se apresentar a um gestor de campo para fazer o procedimento de baixa e registro do seu empenho neste evento. Caso esse procedimento não seja feito correrá o risco de ser apontado como deserção.",
+    "startAt": "2025-06-03T03:00:00.000+00:00",
+    "endAt": "2025-07-06T03:00:00.000+00:00",
+    "activeStaff": 6,
+    "scheduledStaff": 0,
+    "maxStaff": 962,
+    "minStaff": 82,
+    "jobList": [
+        {
+            "uuid": "c50eea0d-0bec-48f6-8c9e-c707bf599ec8",
+            "name": "CMD XI",
+            "description": "Contin - Integrantes do Comando XI",
+            "locationList": [
+                {
+                    "locationUuid": "7a3481a8-e6bc-4595-ba94-a043a41461ec",
+                    "name": "Coreto Lokas",
+                    "description": "O integrante nessa função deverá estar atento à movimentação de pessoas próximo as motos, se o grau está de acordo com as motos que estão paradas naquele local, auxiliar nos integrantes do grau equivalente ao estacionamento nas chegadas e saídas de motos.",
+                    "geoLocation": "-46.899203,-23.1915",
+                    "activeStaff": 0,
+                    "scheduledStaff": 0,
+                    "maxStaff": 41,
+                    "minStaff": 4,
+                    "priority": 5,
+                    "defaultJobTimeInMinutes": 240
+                },
+                {
+                    "locationUuid": "1e189ea6-9e71-49c0-9589-720af90d272e",
+                    "name": "Base 1 Caveira",
+                    "description": "Acompanhar e coordenar os demais staffs em campo, facilitar a comunicação e centralização das informações e estratégias, direcionar o staffs para os postos de rendição e dar baixa nos staffs que concluíram sua jornada",
+                    "geoLocation": "-46.89804,-23.192354",
+                    "activeStaff": 0,
+                    "scheduledStaff": 0,
+                    "maxStaff": 41,
+                    "minStaff": 4,
+                    "priority": 5,
+                    "defaultJobTimeInMinutes": 240
+                },
+                {
+                    "locationUuid": "f594819a-43d8-42c5-80c1-c75eacec93ae",
+                    "name": "Residencia",
+                    "description": "Monitorar o local e impedir quaisquer tipo de obstruções a area de residencia",
+                    "geoLocation": "-46.899328,-23.192684",
+                    "activeStaff": 0,
+                    "scheduledStaff": 0,
+                    "maxStaff": 41,
+                    "minStaff": 4,
+                    "priority": 5,
+                    "defaultJobTimeInMinutes": 240
+                },
+                {
+                    "locationUuid": "1012f7e7-0636-4ad3-88bd-d271189e4597",
+                    "name": "Estac. Grau I",
+                    "description": "O integrante nessa função deverá estar atento as demandas do VIP a que foi designado.",
+                    "geoLocation": "-46.898059,-23.191698",
+                    "activeStaff": 0,
+                    "scheduledStaff": 0,
+                    "maxStaff": 41,
+                    "minStaff": 4,
+                    "priority": 5,
+                    "defaultJobTimeInMinutes": 240
+                },
+                {
+                    "locationUuid": "0b829de3-1a60-46ea-b38e-3bc187f61c42",
+                    "name": "Enfermaria",
+                    "description": "Como membro da equipe de Ronda, sua missão é patrulhar o evento para garantir a segurança e a ordem. Você deve estar atento a qualquer atividade suspeita e auxiliar os participantes, prestando suporte quando necessário.",
+                    "geoLocation": "-46.897638,-23.192002",
+                    "activeStaff": 0,
+                    "scheduledStaff": 0,
+                    "maxStaff": 41,
+                    "minStaff": 4,
+                    "priority": 5,
+                    "defaultJobTimeInMinutes": 240
+                }
+            ],
+            "activeStaff": 0,
+            "scheduledStaff": 0,
+            "maxStaff": 246,
+            "minStaff": 24
+        },
+        {
+            "uuid": "062dd172-33c3-49c4-8b40-a1923eb85d71",
+            "name": "CMD XXVIII",
+            "description": "Rafão - Integrantes do Comando XXVIII",
+            "locationList": [
+                {
+                    "locationUuid": "de36964f-ea83-402b-8aa9-901b4ab54ec7",
+                    "name": "Estac. Acesso Pedestre",
+                    "description": "Acompanhar e coordenar os demais staffs em campo, facilitar a comunicação e centralização das informações e estratégias, direcionar o staffs para os postos de rendição e dar baixa nos staffs que concluíram sua jornada",
+                    "geoLocation": "-46.898679,-23.191389",
+                    "activeStaff": 0,
+                    "scheduledStaff": 0,
+                    "maxStaff": 34,
+                    "minStaff": 0,
+                    "priority": 5,
+                    "defaultJobTimeInMinutes": 240
+                },
+                {
+                    "locationUuid": "9abae332-fd2f-4c30-8c35-9a89f9b7e6a1",
+                    "name": "Estac. Saída Carros Reposição",
+                    "description": "Como membro da equipe de Ronda, sua missão é patrulhar o evento para garantir a segurança e a ordem. Você deve estar atento a qualquer atividade suspeita e auxiliar os participantes, prestando suporte quando necessário.",
+                    "geoLocation": "-46.899507,-23.192135",
+                    "activeStaff": 0,
+                    "scheduledStaff": 0,
+                    "maxStaff": 34,
+                    "minStaff": 0,
+                    "priority": 5,
+                    "defaultJobTimeInMinutes": 240
+                },
+                {
+                    "locationUuid": "fab1ce4f-4ee0-4adc-886d-964700ed972e",
+                    "name": "Entrada Veic. Reposição",
+                    "description": "O integrante nessa função deverá estar atento as demandas do VIP a que foi designado acompanhando o VIP sempre que o mesmo estiver se deslocando. A contenção deverá se apresentar para o VIP informando que estará na função e quando for rendido apresentar para o VIP a nova pessoa responsável pela função. A integrante deverá acompanhar o vip próximo de forma que nunca o perca de vista, porém não tão próximo a ponto de ouvir as conversas.",
+                    "geoLocation": "-46.899216,-23.192969",
+                    "activeStaff": 0,
+                    "scheduledStaff": 0,
+                    "maxStaff": 34,
+                    "minStaff": 0,
+                    "priority": 5,
+                    "defaultJobTimeInMinutes": 240
+                }
+            ],
+            "activeStaff": 0,
+            "scheduledStaff": 0,
+            "maxStaff": 136,
+            "minStaff": 0
+        },
+
+        {
+            "uuid": "4bc044f8-157e-4a9f-9cf7-de36ef912ec6",
+            "name": "CMD VIII",
+            "description": "Alemão - Integrantes do Comando VIII",
+            "locationList": [
+                {
+                    "locationUuid": "73bf137f-0b8e-45e4-bc20-c920e2f40c25",
+                    "name": "Estac. Praça Alimentação",
+                    "description": "O integrante nessa função deverá recepcionar os bondes e convidados que chegarem ao evento, é necessário que o integrante conheça bem o mapa do evento principalmente onde estão localizados os estacionamentos conforme os graus hierárquicos para poder indicar o caminho que deverá ser percorrido por quem chega ao evento.",
+                    "geoLocation": "-46.897776,-23.192546",
+                    "activeStaff": 0,
+                    "scheduledStaff": 0,
+                    "maxStaff": 40,
+                    "minStaff": 5,
+                    "priority": 5,
+                    "defaultJobTimeInMinutes": 240
+                },
+                {
+                    "locationUuid": "bc093d0b-007f-4a8e-b706-733dc1e82aef",
+                    "name": "Praça de alimentação",
+                    "description": "O integrante nessa função deverá estar atento à movimentação de pessoas no perímetro estabelecido, reportar situações suspeitas e zelar pelo bom andamento do evento.",
+                    "geoLocation": "-46.897432,-23.192248",
+                    "activeStaff": 1,
+                    "scheduledStaff": 0,
+                    "maxStaff": 40,
+                    "minStaff": 5,
+                    "priority": 5,
+                    "defaultJobTimeInMinutes": 240
+                },
+                {
+                    "locationUuid": "d747b2ca-409a-498a-ae85-a3dfd373b5d5",
+                    "name": "Saida Parque",
+                    "description": "Monitorar o local e impedir entrada e saida de motocicletas",
+                    "geoLocation": "-46.897784,-23.19178",
+                    "activeStaff": 0,
+                    "scheduledStaff": 0,
+                    "maxStaff": 40,
+                    "minStaff": 5,
+                    "priority": 5,
+                    "defaultJobTimeInMinutes": 240
+                }
+            ],
+            "activeStaff": 1,
+            "scheduledStaff": 0,
+            "maxStaff": 160,
+            "minStaff": 20
+        }
+    ]
+}
