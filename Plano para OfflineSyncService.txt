@@ -1,0 +1,71 @@
+Atue como um Especialista em Angular. Preciso criar o componente OperatorSyncComponent para gerenciar a alocação e o ponto de uma equipe em modo offline. O OfflineSyncService e os dados do mock já estão criados e atualizados.
+
+Por favor, gere os arquivos seguindo estritamente estas regras:
+
+Crie um componente Standalone dentro da pasta feature/operator-sync.
+
+Separe os arquivos em HTML, SCSS e TS.
+
+Utilize o layout e a estilização que seguem o modelo dos componentes que já existem na aplicação.
+
+Funcionalidades do TypeScript:
+
+Injete o OfflineSyncService.
+
+No ngOnInit, carregue a lista de alocações.
+
+Extraia os locais únicos para preencher o filtro (dropdown).
+
+Crie a variável reativa filaOffline (array vazio inicialmente).
+
+Crie a função para registrar a ação do usuário: ela deve alterar o status visual do integrante e adicionar o registro (ID, Local, Ação, DataHora) na filaOffline.
+
+Atenção aos Enums: Utilize estritamente os event types da API events type : [
+  {
+    "name": "Agendado",
+    "description": "Agendamento de inicio de função ",
+    "eventTypeEnum": "scheduler"
+  },
+  {
+    "name": "Concuido",
+    "description": "Conclusão do trabalho de Staff com sucesso",
+    "eventTypeEnum": "end_success"
+  },
+  {
+    "name": "Iniciado",
+    "description": "Inicío do trabalho",
+    "eventTypeEnum": "start"
+  },
+  {
+    "name": "Deserção",
+    "description": "Integrante não deu baixa na staff e não foi encontrado",
+    "eventTypeEnum": "end_failure"
+  },
+  {
+    "name": "Ocorrencia",
+    "description": "Registro de ocorrencia Simples",
+    "eventTypeEnum": "notification"
+  },
+  {
+    "name": "Disciplina",
+    "description": "Registro de evento disciplinar",
+    "eventTypeEnum": "notification"
+  },
+  {
+    "name": "Troca Função",
+    "description": "Troca de posto de trabalho",
+    "eventTypeEnum": "change_job"
+  }
+].
+
+Funcionalidades do HTML:
+
+Topo: Um select (dropdown) para escolher o Local de Trabalho.
+
+Meio: Lista dinâmica mostrando apenas os integrantes do local selecionado. Cada item deve exibir Colete, Nome, Status Atual e os botões de ação ("Iniciar", "Encerrar").
+
+Rodapé: Contador mostrando os itens na "Fila Offline" aguardando sincronização.
+
+Configuração Extra:
+
+Adicione a rota deste componente no arquivo src/app/shared/components/sidebar/sidebar.component.ts.
